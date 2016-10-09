@@ -25,9 +25,8 @@ public class AutoReply extends Fragment {
         // Required empty public constructor
     }
 
-    public static AutoReply newInstance(String param1, String param2) {
-        AutoReply fragment = new AutoReply();
-        return fragment;
+    public static AutoReply newInstance() {
+        return new AutoReply();
     }
 
     @Override
