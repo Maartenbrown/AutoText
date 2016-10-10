@@ -8,7 +8,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:text="@string/auto_reply_title"
         android:textSize="36sp"
         android:textAlignment="center"
@@ -22,6 +22,7 @@
         android:layout_marginTop="@dimen/auto_reply_section_top_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:id="@+id/auto_reply_text"
         android:hint="@string/auto_reply_text_hint"
         android:inputType="textMultiLine"
         android:gravity="top"/>
@@ -38,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/auto_reply_duration_vertical_margin">
+        android:layout_marginTop="@dimen/auto_reply_duration_top_margin">
 
         <EditText
             android:layout_width="0dp"
@@ -46,15 +47,14 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_weight=".01"
-            android:hint="5" />
+            android:id="@+id/auto_reply_duration" />
 
 
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="bottom"
-            android:id="@+id/auto_reply_duration_unit">
+            android:layout_gravity="bottom">
 
             <RadioButton
                 android:layout_width="wrap_content"
@@ -82,6 +82,7 @@
         android:layout_marginTop="@dimen/auto_reply_section_top_margin"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
-        android:text="Save" />
+        android:id="@+id/auto_reply_save_button"
+        android:text="Save"/>
 
 </LinearLayout>
