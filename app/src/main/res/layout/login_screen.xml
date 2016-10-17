@@ -53,6 +53,7 @@
         android:layout_marginTop="@dimen/auto_reply_section_top_margin"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
+        android:onClick="openMenu"
         android:id="@+id/login_screen_login_button"
         android:text="Login"/>
 

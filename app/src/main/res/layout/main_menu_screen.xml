@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="autotext.app.MenuScreen"
+    android:id = "@+id/menu_screen_layout_id"
+    tools:context="autotext.app.Menu"
     android:weightSum="1">
 
     <LinearLayout
@@ -20,6 +21,7 @@
             android:layout_height="75dp"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
+            android:onClick="openContacts"
             android:id="@+id/menu_screen_contacts_button"
             android:text="Contacts"/>
 
@@ -28,6 +30,7 @@
             android:layout_height="75dp"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
+            android:onClick="openMessages"
             android:id="@+id/menu_screen_message_history_button"
             android:text="Message History"/>
         </LinearLayout>
@@ -54,6 +57,7 @@
             android:layout_height="75dp"
             android:gravity="center"
             android:layout_gravity="left"
+            android:onClick="openSettings"
             android:id="@+id/menu_screen_settings_button"
             android:text="Settings"/>
 
@@ -62,6 +66,7 @@
             android:layout_height="75dp"
             android:gravity="center"
             android:layout_gravity="right"
+            android:onClick="openAutoreply"
             android:id="@+id/menu_screen_auto_reply_button"
             android:text="Auto-Reply"/>
     </LinearLayout>
@@ -71,6 +76,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_gravity="center"
+        android:onClick="openLogout"
         android:id="@+id/menu_screen_logout_button"
         android:layout_alignParentEnd = "true"
         android:text="Log Out"/>

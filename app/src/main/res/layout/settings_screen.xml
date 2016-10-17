@@ -5,6 +5,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:id = "@+id/settings_screen_id"
               tools:context="autotext.app.Settings"
               android:weightSum="1">
 
@@ -51,7 +52,7 @@
             android:layout_width="25dp"
             android:layout_height="20dp"
             android:layout_marginTop="@dimen/settings_twitter_top_margin"
-
+            android:id = "@+id/gps_checkbox_id"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
             android:text = "Use GPS"
@@ -79,7 +80,7 @@
             android:layout_width="25dp"
             android:layout_height="20dp"
             android:layout_marginTop="@dimen/settings_twitter_top_margin"
-
+            android:id = "@+id/wifi_checkbox_id"
             android:gravity="center"
             android:layout_gravity="center_horizontal"/>
         <TextView
@@ -106,6 +107,7 @@
             android:layout_marginTop="@dimen/settings_twitter_top_margin"
             android:layout_marginLeft="60dp"
             android:gravity="center"
+            android:id = "@+id/cell_checkbox_id"
             android:layout_gravity="center_horizontal"/>
         <TextView
             android:layout_width="wrap_content"
@@ -129,7 +131,6 @@
             android:layout_marginLeft="50dp"
             android:orientation="vertical"
             android:max="15"
-            android:min="1"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -142,3 +143,4 @@
 
     </LinearLayout>
 
+</LinearLayout>

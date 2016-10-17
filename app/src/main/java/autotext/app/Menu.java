@@ -9,33 +9,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Login.OnFragmentInteractionListener} interface
+ * {@link Menu.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link Login#newInstance} factory method to
+ * Use the {@link Menu#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Login extends Fragment implements OnClickListener {
 
-    private OnFragmentInteractionListener loginListener;
+public class Menu extends Fragment implements OnClickListener {
 
-    private EditText editUsername;
-    private EditText editPassword;
+    private Menu.OnFragmentInteractionListener menuListener;
 
-    private Button loginButton;
-    private Button newUserButton;
+    private Button menuContactsButton;
+    private Button menuMessageHistoryButton;
+    private Button menuMessagesButton;
+    private Button menuSettingsButton;
+    private Button menuAutoreplyButton;
+    private Button menuLogoutButton;
 
-    public Login() {
+    public Menu() {
         // Required empty public constructor
     }
 
-    public static Login newInstance() {
-        return new Login();
+    public static Menu newInstance() {
+        return new Menu();
     }
 
     @Override
@@ -47,14 +47,22 @@ public class Login extends Fragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.login_screen, container, false);
+        View view = inflater.inflate(R.layout.main_menu_screen, container, false);
 
-        editUsername = (EditText) view.findViewById(R.id.login_username);
-        editPassword = (EditText) view.findViewById(R.id.login_password);
-        loginButton = (Button) view.findViewById(R.id.login_screen_login_button);
-        newUserButton = (Button) view.findViewById(R.id.login_screen_new_user_button);
-        loginButton.setOnClickListener(this);
-        newUserButton.setOnClickListener(this);
+
+        menuContactsButton = (Button) view.findViewById(R.id.menu_screen_contacts_button);
+        menuMessageHistoryButton = (Button) view.findViewById(R.id.menu_screen_message_history_button);
+        menuMessagesButton = (Button) view.findViewById(R.id.menu_screen_messages_button);
+        menuSettingsButton = (Button) view.findViewById(R.id.menu_screen_settings_button);
+        menuAutoreplyButton = (Button) view.findViewById(R.id.menu_screen_auto_reply_button);
+        menuLogoutButton = (Button) view.findViewById(R.id.menu_screen_logout_button);
+
+        menuContactsButton.setOnClickListener(this);
+        menuMessageHistoryButton.setOnClickListener(this);
+        menuMessagesButton.setOnClickListener(this);
+        menuSettingsButton.setOnClickListener(this);
+        menuAutoreplyButton.setOnClickListener(this);
+        menuLogoutButton.setOnClickListener(this);
 
         return view;
     }
@@ -62,8 +70,8 @@ public class Login extends Fragment implements OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            loginListener = (OnFragmentInteractionListener) context;
+        if (context instanceof Menu.OnFragmentInteractionListener) {
+            menuListener = (Menu.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -73,33 +81,15 @@ public class Login extends Fragment implements OnClickListener {
     @Override
     public void onDetach() {
         super.onDetach();
-        loginListener = null;
+        menuListener = null;
     }
 
     @Override
     public void onClick(View view) {
 
-        String username = editUsername.getText().toString();
-        String password = editPassword.getText().toString();
-
-
-        if(username.isEmpty()) {
-            editUsername.setError("Username is required");
-            return;
-        }
-
-        if(password.isEmpty()) {
-            editPassword.setError("Password is required");
-        }
-
         //TODO: Navigation to another view
     }
 
-    public void openMenu(View view)
-    {
-//        Intent intent = new Intent(loginActivity.this, Menu.class);
-//        startActivity(intent);
-    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
