@@ -51,9 +51,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="autotext.app.AutoReply"
-        tools:layout="@layout/fragment_auto_reply"
         android:layout_below="@+id/my_toolbar"
         android:layout_alignParentStart="true"
-        android:id ="@+id/mainfragment"/>
+        android:id ="@+id/mainfragment"
+        tools:layout="@layout/fragment_auto_reply" />
 
 </RelativeLayout>

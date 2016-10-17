@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener, MessagesFragment.OnFragmentInteractionListener{
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -25,11 +25,23 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
                 goToAutoReply();
             }
         });
+        Button messages = (Button) findViewById(R.id.messages_button);
+        messages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMessages();
+            }
+
+        });
     }
 
     private void goToAutoReply() {
         AutoReply autoReplyFragment = AutoReply.newInstance();
         fragmentManager.beginTransaction().replace(R.id.mainfragment, autoReplyFragment).commit();
+    }
+    private void goToMessages(){
+        MessagesFragment mes = MessagesFragment.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.mainfragment, mes).commit();
     }
 
     @Override
