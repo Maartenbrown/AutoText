@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
 
     private void goToAutoReply() {
         AutoReply autoReplyFragment = AutoReply.newInstance();
-        fragmentManager.beginTransaction().replace(R.id.fragment_layout, autoReplyFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.mainfragment, autoReplyFragment).commit();
     }
 
     @Override
