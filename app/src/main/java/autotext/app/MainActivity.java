@@ -9,7 +9,8 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener,
         HistoryFragment.OnFragmentInteractionListener, MessagesFragment.OnFragmentInteractionListener,
-        ContactsFragment.OnFragmentInteractionListener, ConversationFragment.OnFragmentInteractionListener{
+        ContactsFragment.OnFragmentInteractionListener, ConversationFragment.OnFragmentInteractionListener,
+        ComposeMessage.OnFragmentInteractionListener {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
             @Override
             public void onClick(View v) {
                 // Code to set fragment here
-                goToAutoReply();
+                goToComposeMessage();
             }
         });
         Button messages = (Button) findViewById(R.id.messages_button);
@@ -37,9 +38,9 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         });
     }
 
-    private void goToAutoReply() {
-        AutoReply autoReplyFragment = AutoReply.newInstance();
-        fragmentManager.beginTransaction().replace(R.id.main_fragment, autoReplyFragment).addToBackStack("autoreply").commit();
+    private void goToComposeMessage() {
+        ComposeMessage composeMessage = ComposeMessage.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.main_fragment, composeMessage).addToBackStack("composemessage").commit();
     }
     private void goToHistory(){
         HistoryFragment mes = HistoryFragment.newInstance();
