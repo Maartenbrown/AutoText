@@ -4,4 +4,7 @@
     <!-- Strings for Auto Reply Fragment -->
     <string name="auto_reply_title">Set up Auto Reply</string>
     <string name="auto_reply_text_hint">Enter your message here</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
