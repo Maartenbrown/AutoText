@@ -37,11 +37,11 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
 
     private void goToAutoReply() {
         AutoReply autoReplyFragment = AutoReply.newInstance();
-        fragmentManager.beginTransaction().replace(R.id.mainfragment, autoReplyFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.main_fragment, autoReplyFragment).addToBackStack("autoreply").commit();
     }
     private void goToMessages(){
         MessagesFragment mes = MessagesFragment.newInstance();
-        fragmentManager.beginTransaction().replace(R.id.mainfragment, mes).commit();
+        fragmentManager.beginTransaction().replace(R.id.main_fragment, mes).addToBackStack("messagelist").commit();
     }
 
     @Override

@@ -47,13 +47,15 @@
         android:layout_centerHorizontal="true" />
 
  </android.support.v7.widget.Toolbar>
-    <fragment
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="autotext.app.AutoReply"
         android:layout_below="@+id/my_toolbar"
         android:layout_alignParentStart="true"
-        android:id ="@+id/mainfragment"
-        tools:layout="@layout/fragment_auto_reply" />
+        android:id="@+id/main_fragment"></FrameLayout>
 
 </RelativeLayout>
+
+
+
