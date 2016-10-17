@@ -19,21 +19,21 @@ import android.widget.ListView;
  * Use the {@link HistoryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MessagesFragment extends Fragment {
+public class HistoryFragment extends Fragment {
 
 
 
     private OnFragmentInteractionListener mListener;
-    private String[] tempMessages = {"Message1","message2","set message3",
-            "set message 4",
-            "set message 5",
-            "set message 6",
-            "set message 7",
-            "m8",
-            "m9",
-            "m10"};
+    private String[] tempHist = {"Last message preview text","I never sleep, cause sleep is the cousin of death","Love, love is a verb",
+            "You used to call me on my cell phone Late night when you need my love",
+            "Back in the day yo as we learned a man was not considered to be",
+            "Don't think I've been this nervous with a cold drink In my two hands, saying no thanks",
+            "And it scrolls too! Omg, look at the scrolling",
+            "I walked into the room dripping in gold",
+            "There's a black rainbow upon my house",
+            "And when she needs to shelter from reality she takes a dip in my daydreams"};
 
-    public MessagesFragment() {
+    public HistoryFragment() {
         // Required empty public constructor
     }
 
@@ -44,8 +44,8 @@ public class MessagesFragment extends Fragment {
      * @return A new instance of fragment HistoryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MessagesFragment newInstance() {
-        MessagesFragment fragment = new MessagesFragment();
+    public static HistoryFragment newInstance() {
+        HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -63,9 +63,9 @@ public class MessagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_messages, container, false);
-        ArrayAdapter<String> adapt =new ArrayAdapter<String>(this.getContext(), R.layout.message_list, R.id.m_list_text, tempMessages);
-        ListView li = (ListView) view.findViewById(R.id.message_list);
+        View view = inflater.inflate(R.layout.fragment_history, container, false);
+        ArrayAdapter<String> adapt =new ArrayAdapter<>(this.getContext(), R.layout.history_list, R.id.h_list_text, tempHist);
+        ListView li = (ListView) view.findViewById(R.id.history_list);
         li.setAdapter(adapt);
         return view;
     }

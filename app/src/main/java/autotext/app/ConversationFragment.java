@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 
 
@@ -19,21 +20,14 @@ import android.widget.ListView;
  * Use the {@link HistoryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MessagesFragment extends Fragment {
+public class ConversationFragment extends Fragment {
 
 
 
-    private OnFragmentInteractionListener mListener;
-    private String[] tempMessages = {"Message1","message2","set message3",
-            "set message 4",
-            "set message 5",
-            "set message 6",
-            "set message 7",
-            "m8",
-            "m9",
-            "m10"};
+    private OnFragmentInteractionListener cListener;
+    private String[] tempMess = {"This is a message", "This is also a message","It's not set up for mutliple views yet", "\n","1:33 pm","Jimmy Purpleheart", "Joe Fern", "Jude Dogwood" };
 
-    public MessagesFragment() {
+    public ConversationFragment() {
         // Required empty public constructor
     }
 
@@ -44,8 +38,8 @@ public class MessagesFragment extends Fragment {
      * @return A new instance of fragment HistoryFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MessagesFragment newInstance() {
-        MessagesFragment fragment = new MessagesFragment();
+    public static ConversationFragment newInstance() {
+        ConversationFragment fragment = new ConversationFragment();
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -63,17 +57,19 @@ public class MessagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_messages, container, false);
-        ArrayAdapter<String> adapt =new ArrayAdapter<String>(this.getContext(), R.layout.message_list, R.id.m_list_text, tempMessages);
-        ListView li = (ListView) view.findViewById(R.id.message_list);
+        View view = inflater.inflate(R.layout.fragment_conversaion, container, false);
+        //set up adapter for scrolling contact list
+        ArrayAdapter<String> adapt =new ArrayAdapter<>(this.getContext(), R.layout.conversation_list, R.id.con_list_text, tempMess);
+        ListView li = (ListView) view.findViewById(R.id.conversation_list);
         li.setAdapter(adapt);
+
         return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        if (cListener != null) {
+            cListener.onFragmentInteraction(uri);
         }
     }
 
@@ -81,7 +77,7 @@ public class MessagesFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            cListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -91,7 +87,7 @@ public class MessagesFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        cListener = null;
     }
 
     /**

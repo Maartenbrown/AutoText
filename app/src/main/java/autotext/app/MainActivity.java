@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener, MessagesFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener,
+        HistoryFragment.OnFragmentInteractionListener, MessagesFragment.OnFragmentInteractionListener,
+        ContactsFragment.OnFragmentInteractionListener, ConversationFragment.OnFragmentInteractionListener{
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -38,6 +40,10 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     private void goToAutoReply() {
         AutoReply autoReplyFragment = AutoReply.newInstance();
         fragmentManager.beginTransaction().replace(R.id.main_fragment, autoReplyFragment).addToBackStack("autoreply").commit();
+    }
+    private void goToHistory(){
+        HistoryFragment mes = HistoryFragment.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.main_fragment, mes).addToBackStack("historylist").commit();
     }
     private void goToMessages(){
         MessagesFragment mes = MessagesFragment.newInstance();
