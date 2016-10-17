@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="autotext.app.MenuScreen"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal" >
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/menu_screen_contacts_button"
+            android:text="Contacts"/>
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/menu_screen_message_history_button"
+            android:text="Message History"/>
+        </LinearLayout>
+
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="75dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="50dp"
+        android:id="@+id/menu_screen_messages_button"
+        android:text="Messages"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:layout_gravity="left"
+            android:id="@+id/menu_screen_settings_button"
+            android:text="Settings"/>
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:id="@+id/menu_screen_auto_reply_button"
+            android:text="Auto-Reply"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/menu_screen_logout_button"
+        android:layout_alignParentEnd = "true"
+        android:text="Log Out"/>
+</LinearLayout>
