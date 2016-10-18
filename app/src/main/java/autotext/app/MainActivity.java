@@ -8,9 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener,
-        HistoryFragment.OnFragmentInteractionListener, MessagesFragment.OnFragmentInteractionListener,
-        ContactsFragment.OnFragmentInteractionListener, ConversationFragment.OnFragmentInteractionListener,
-        ComposeMessage.OnFragmentInteractionListener {
+        Menu.OnFragmentInteractionListener, Login.OnFragmentInteractionListener {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -18,37 +16,22 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // We can use this to test our fragments
-        Button go = (Button) findViewById(R.id.go_button);
-        go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Code to set fragment here
-                goToComposeMessage();
-            }
-        });
-        Button messages = (Button) findViewById(R.id.messages_button);
-        messages.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToMessages();
-            }
-
-        });
+        goToLogin();
     }
 
-    private void goToComposeMessage() {
-        ComposeMessage composeMessage = ComposeMessage.newInstance();
-        fragmentManager.beginTransaction().replace(R.id.main_fragment, composeMessage).addToBackStack("composemessage").commit();
+    public void goToAutoReply() {
+        AutoReply autoReplyFragment = AutoReply.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.fragment_layout, autoReplyFragment).commit();
     }
-    private void goToHistory(){
-        HistoryFragment mes = HistoryFragment.newInstance();
-        fragmentManager.beginTransaction().replace(R.id.main_fragment, mes).addToBackStack("historylist").commit();
+
+    public void goToLogin() {
+        Login loginFragment = Login.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.fragment_layout, loginFragment).commit();
     }
-    private void goToMessages(){
-        MessagesFragment mes = MessagesFragment.newInstance();
-        fragmentManager.beginTransaction().replace(R.id.main_fragment, mes).addToBackStack("messagelist").commit();
+
+    public void goToMenu() {
+        Menu menu = Menu.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.fragment_layout, menu).commit();
     }
 
     @Override
