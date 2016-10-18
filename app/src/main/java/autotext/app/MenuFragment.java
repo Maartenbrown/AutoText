@@ -95,7 +95,7 @@ public class MenuFragment extends Fragment {
         menuLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.goToLogin();
+                mListener.logOut();
             }
         });
         return view;
@@ -140,12 +140,13 @@ public class MenuFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-        public void goToAutoReply();
-        public void goToLogin();
-        public void goToMenu();
-        public void goToContacts();
-        public void goToMessageHistory();
-        public void goToMessages();
-        public void goToSettings();
+         void goToAutoReply();
+         void goToLogin();
+         void goToMenu();
+         void goToContacts();
+         void goToMessageHistory();
+         void goToMessages();
+        void goToSettings();
+        void logOut();
     }
 }

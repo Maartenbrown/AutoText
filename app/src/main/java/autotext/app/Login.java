@@ -85,14 +85,10 @@ public class Login extends Fragment implements OnClickListener {
             editPassword.setError("Password is required");
         }
 
-        openMenu();
+        loginListener.onLogin();
     }
 
-    private void openMenu()
-    {
-        //Probably not the best way to do this but it'll do for now
-        ((MainActivity)getActivity()).goToMenu();
-    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -106,5 +102,6 @@ public class Login extends Fragment implements OnClickListener {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+        void onLogin();
     }
 }
