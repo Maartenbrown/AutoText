@@ -19,17 +19,17 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         goToLogin();
     }
 
-    private void goToAutoReply() {
+    public void goToAutoReply() {
         AutoReply autoReplyFragment = AutoReply.newInstance();
         fragmentManager.beginTransaction().replace(R.id.fragment_layout, autoReplyFragment).commit();
     }
 
-    private void goToLogin() {
+    public void goToLogin() {
         Login loginFragment = Login.newInstance();
         fragmentManager.beginTransaction().replace(R.id.fragment_layout, loginFragment).commit();
     }
 
-    private void goToMenu() {
+    public void goToMenu() {
         Menu menu = Menu.newInstance();
         fragmentManager.beginTransaction().replace(R.id.fragment_layout, menu).commit();
     }

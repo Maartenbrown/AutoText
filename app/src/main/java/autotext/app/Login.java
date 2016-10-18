@@ -92,13 +92,13 @@ public class Login extends Fragment implements OnClickListener {
             editPassword.setError("Password is required");
         }
 
-        //TODO: Navigation to another view
+        openMenu();
     }
 
-    public void openMenu(View view)
+    private void openMenu()
     {
-//        Intent intent = new Intent(loginActivity.this, Menu.class);
-//        startActivity(intent);
+        //Probably not the best way to do this but it'll do for now
+        ((MainActivity)getActivity()).goToMenu();
     }
     /**
      * This interface must be implemented by activities that contain this
