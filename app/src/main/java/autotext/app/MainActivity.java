@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener,
+        Menu.OnFragmentInteractionListener, Login.OnFragmentInteractionListener {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -15,21 +16,22 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // We can use this to test our fragments
-        Button go = (Button) findViewById(R.id.go_button);
-        go.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Code to set fragment here
-                goToAutoReply();
-            }
-        });
+        goToLogin();
     }
 
     private void goToAutoReply() {
         AutoReply autoReplyFragment = AutoReply.newInstance();
         fragmentManager.beginTransaction().replace(R.id.fragment_layout, autoReplyFragment).commit();
+    }
+
+    private void goToLogin() {
+        Login loginFragment = Login.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.fragment_layout, loginFragment).commit();
+    }
+
+    private void goToMenu() {
+        Menu menu = Menu.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.fragment_layout, menu).commit();
     }
 
     @Override
