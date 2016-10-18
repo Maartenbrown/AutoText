@@ -12,14 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Login.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Login#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Login extends Fragment implements OnClickListener {
 
     private OnFragmentInteractionListener loginListener;
