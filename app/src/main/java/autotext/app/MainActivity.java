@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
 
     public void goToAutoReply() {
         AutoReply autoReplyFragment = AutoReply.newInstance();
-        fragmentManager.beginTransaction().replace(R.id.fragment_layout, autoReplyFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.fragment_layout, autoReplyFragment).addToBackStack("autoreply").commit();
     }
 
     public void goToLogin() {
