@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         MenuFragment.OnFragmentInteractionListener, Login.OnFragmentInteractionListener,
         HistoryFragment.OnFragmentInteractionListener, MessagesFragment.OnFragmentInteractionListener,
         ContactsFragment.OnFragmentInteractionListener, ConversationFragment.OnFragmentInteractionListener,
-        ComposeMessage.OnFragmentInteractionListener {
+        ComposeMessage.OnFragmentInteractionListener, Settings.OnFragmentInteractionListener {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
