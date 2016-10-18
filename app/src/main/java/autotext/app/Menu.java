@@ -86,10 +86,13 @@ public class Menu extends Fragment implements OnClickListener {
 
     @Override
     public void onClick(View view) {
-
+        goToAutoReply();
         //TODO: Navigation to another view
     }
 
+    private void goToAutoReply() {
+
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
