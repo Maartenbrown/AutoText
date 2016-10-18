@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener,
+        HistoryFragment.OnFragmentInteractionListener, MessagesFragment.OnFragmentInteractionListener,
+        ContactsFragment.OnFragmentInteractionListener, ConversationFragment.OnFragmentInteractionListener,
+        ComposeMessage.OnFragmentInteractionListener {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -22,14 +25,30 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
             @Override
             public void onClick(View v) {
                 // Code to set fragment here
-                goToAutoReply();
+                goToComposeMessage();
             }
+        });
+        Button messages = (Button) findViewById(R.id.messages_button);
+        messages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMessages();
+            }
+
         });
     }
 
-    private void goToAutoReply() {
-        AutoReply autoReplyFragment = AutoReply.newInstance();
-        fragmentManager.beginTransaction().replace(R.id.fragment_layout, autoReplyFragment).commit();
+    private void goToComposeMessage() {
+        ComposeMessage composeMessage = ComposeMessage.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.main_fragment, composeMessage).addToBackStack("composemessage").commit();
+    }
+    private void goToHistory(){
+        HistoryFragment mes = HistoryFragment.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.main_fragment, mes).addToBackStack("historylist").commit();
+    }
+    private void goToMessages(){
+        MessagesFragment mes = MessagesFragment.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.main_fragment, mes).addToBackStack("messagelist").commit();
     }
 
     @Override
