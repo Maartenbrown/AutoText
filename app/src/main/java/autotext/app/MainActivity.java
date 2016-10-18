@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+
 public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener,
-        Menu.OnFragmentInteractionListener, Login.OnFragmentInteractionListener {
+        MenuFragment.OnFragmentInteractionListener, Login.OnFragmentInteractionListener,
+        HistoryFragment.OnFragmentInteractionListener, MessagesFragment.OnFragmentInteractionListener,
+        ContactsFragment.OnFragmentInteractionListener, ConversationFragment.OnFragmentInteractionListener,
+        ComposeMessage.OnFragmentInteractionListener {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -30,8 +34,25 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     }
 
     public void goToMenu() {
-        Menu menu = Menu.newInstance();
+        MenuFragment menu = MenuFragment.newInstance();
         fragmentManager.beginTransaction().replace(R.id.fragment_layout, menu).commit();
+    }
+    public void goToContacts() {
+        ContactsFragment contactsFragment = ContactsFragment.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.fragment_layout, contactsFragment).addToBackStack("contactsFragment").commit();
+    }
+    public void goToMessageHistory() {
+        HistoryFragment historyFragment = HistoryFragment.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.fragment_layout, historyFragment).addToBackStack("historyFragment").commit();
+    }
+    public void goToMessages() {
+        MessagesFragment messagesFragment = MessagesFragment.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.fragment_layout, messagesFragment).addToBackStack("messagesFragment").commit();
+    }
+
+    public void goToSettings() {
+        Settings settings = Settings.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.fragment_layout, settings).addToBackStack("settings").commit();
     }
 
     @Override

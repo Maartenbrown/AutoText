@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id = "@+id/menu_screen_layout_id"
-    tools:context="autotext.app.Menu"
+    tools:context="autotext.app.MenuFragment"
     android:weightSum="1">
 
     <LinearLayout
