@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id = "@+id/settings_screen_id"
+              tools:context="autotext.app.Settings"
+              android:weightSum="1">
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Settings"
+    android:textSize="25sp"
+    android:gravity="center"
+    android:layout_marginTop="@dimen/settings_title_top_margin"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/settings_facebook_top_margin"
+        android:gravity="center"
+        android:background="#3B5998"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/settings_screen_facebook_button"
+        android:text="Sign in with Facebook"/>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/settings_twitter_top_margin"
+        android:gravity="center"
+        android:background="#00aced"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/settings_screen_twitter_button"
+        android:text="Sign in with Twitter"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:orientation="horizontal"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop = "30dp"
+                  android:layout_gravity="center_horizontal"
+                  tools:context="autotext.app.Settings"
+                  android:weightSum="2">
+        <CheckBox
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/settings_twitter_top_margin"
+            android:id = "@+id/gps_checkbox_id"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:text = "Use GPS"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="18sp"
+            android:text="Use GPS"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:orientation="horizontal"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop = "0dp"
+                  android:layout_marginLeft="0dp"
+                  android:layout_gravity="center_horizontal"
+                  tools:context="autotext.app.Settings"
+                  android:weightSum="2">
+        <CheckBox
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/settings_twitter_top_margin"
+            android:id = "@+id/wifi_checkbox_id"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="18sp"
+            android:text="Use WiFi"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:orientation="horizontal"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop = "0dp"
+                  android:layout_gravity="center_horizontal"
+                  tools:context="autotext.app.Settings"
+                  android:weightSum="2">
+        <CheckBox
+            android:layout_width="25dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="@dimen/settings_twitter_top_margin"
+            android:layout_marginLeft="60dp"
+            android:gravity="center"
+            android:id = "@+id/cell_checkbox_id"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textSize="18sp"
+            android:text="Use Cell Towers"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/numberPicker1"
+            android:layout_gravity="left"
+            android:layout_marginLeft="50dp"
+            android:orientation="vertical"
+            android:max="15"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="40dp"
+            android:textSize="15sp"
+            android:text="Location Check Interval (mins)"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
