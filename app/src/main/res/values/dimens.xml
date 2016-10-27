@@ -2,4 +2,20 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Dimensions for Auto Reply Fragment -->
+    <dimen name="auto_reply_title_top_margin">35dp</dimen>
+    <dimen name="auto_reply_section_top_margin">20dp</dimen>
+    <dimen name="auto_reply_duration_top_margin">5dp</dimen>
+
+    <!-- Dimensions for Login Fragment -->
+    <dimen name="login_username_top_margin">35dp</dimen>
+    <dimen name="login_password_top_margin">35dp</dimen>
+
+    <!-- Dimensions for Settings Fragment -->
+    <dimen name="settings_title_top_margin">15dp</dimen>
+    <dimen name="settings_facebook_top_margin">60dp</dimen>
+    <dimen name="settings_twitter_top_margin">30dp</dimen>
+
+
 </resources>
