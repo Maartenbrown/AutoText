@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,10 +16,12 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         ComposeMessage.OnFragmentInteractionListener, Settings.OnFragmentInteractionListener {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
+    private final String TAG = "MAIN";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "Activity Created");
         setContentView(R.layout.activity_main);
         goToLogin();
     }
