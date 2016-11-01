@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ public class Login extends Fragment implements OnClickListener {
     private Button loginButton;
     private Button newUserButton;
 
+    private final String TAG = "LOGIN";
+
     public Login() {
         // Required empty public constructor
     }
@@ -34,6 +37,7 @@ public class Login extends Fragment implements OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "Fragment created");
     }
 
     @Override
@@ -55,6 +59,7 @@ public class Login extends Fragment implements OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.d(TAG, "Fragment attached");
         if (context instanceof OnFragmentInteractionListener) {
             loginListener = (OnFragmentInteractionListener) context;
         } else {
@@ -66,6 +71,7 @@ public class Login extends Fragment implements OnClickListener {
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.d(TAG, "Fragment detached");
         loginListener = null;
     }
 

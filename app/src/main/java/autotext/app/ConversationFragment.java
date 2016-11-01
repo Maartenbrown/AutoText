@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ public class ConversationFragment extends Fragment {
     private OnFragmentInteractionListener cListener;
     private String[] tempMess = {"This is a message", "This is also a message","It's not set up for mutliple views yet", "\n","1:33 pm","Jimmy Purpleheart", "Joe Fern", "Jude Dogwood" };
 
+    private final String TAG = "CONVERSATION";
+
     public ConversationFragment() {
         // Required empty public constructor
     }
@@ -49,8 +52,7 @@ public class ConversationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        Log.d(TAG, "Fragment created");
     }
 
     @Override
@@ -76,6 +78,7 @@ public class ConversationFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.d(TAG, "Fragment attached");
         if (context instanceof OnFragmentInteractionListener) {
             cListener = (OnFragmentInteractionListener) context;
         } else {
@@ -87,6 +90,7 @@ public class ConversationFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.d(TAG, "Fragment detached");
         cListener = null;
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class Settings extends Fragment implements OnClickListener {
 
     private Button facebookButton;
     private Button twitterButton;
+    private final String TAG = "SETTINGS";
 
     public Settings() {
         // Required empty public constructor
@@ -36,6 +38,7 @@ public class Settings extends Fragment implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "Fragment created");
         //setContentView(R.layout.settings_screen;
         //    final CheckBox facebookCheckBox = (CheckBox) findViewById(R.id.checkbox_id);
 //    if (facebookCheckBox.isChecked()) {
@@ -83,6 +86,7 @@ public class Settings extends Fragment implements OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Log.d(TAG, "Fragment attached");
         if (context instanceof Settings.OnFragmentInteractionListener) {
             settingsListener = (Settings.OnFragmentInteractionListener) context;
         } else {
@@ -94,6 +98,7 @@ public class Settings extends Fragment implements OnClickListener {
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.d(TAG, "Fragment detached");
         settingsListener = null;
     }
 
