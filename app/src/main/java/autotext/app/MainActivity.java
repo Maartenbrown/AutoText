@@ -63,6 +63,11 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         fragmentManager.beginTransaction().replace(R.id.main_fragment, composeFragment).addToBackStack("composeMessage").commit();
     }
 
+    public void goToMap() {
+        MapFragment map = MapFragment.newInstance();
+        fragmentManager.beginTransaction().replace(R.id.main_fragment, map).addToBackStack("map").commit();
+    }
+
     public void logOut(){
         goToLogin();
         //disable menu bar buttons here.
