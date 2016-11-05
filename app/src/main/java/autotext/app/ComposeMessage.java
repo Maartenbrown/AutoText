@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -21,6 +22,8 @@ import android.view.ViewGroup;
 public class ComposeMessage extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private Button selectLocationButton;
+    private Button saveButton;
 
     private final String TAG = "COMPOSE_MESSAGE";
 
@@ -42,7 +45,26 @@ public class ComposeMessage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_compose_message, container, false);
+        View view = inflater.inflate(R.layout.fragment_compose_message, container, false);
+
+        selectLocationButton = (Button) view.findViewById(R.id.compose_message_select_location);
+        saveButton = (Button) view.findViewById(R.id.compose_message_save);
+
+        selectLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Open map fragment
+            }
+        });
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Save message
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
