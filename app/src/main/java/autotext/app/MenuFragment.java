@@ -61,6 +61,7 @@ public class MenuFragment extends Fragment {
         Button menuContactsButton = (Button) view.findViewById(R.id.menu_screen_contacts_button);
         Button menuMessageHistoryButton = (Button) view.findViewById(R.id.menu_screen_message_history_button);
         Button menuMessagesButton = (Button) view.findViewById(R.id.menu_screen_messages_button);
+        Button menuComposeButton = (Button) view.findViewById(R.id.menu_screen_compose_button);
         Button menuSettingsButton = (Button) view.findViewById(R.id.menu_screen_settings_button);
         Button menuAutoreplyButton = (Button) view.findViewById(R.id.menu_screen_auto_reply_button);
         Button menuLogoutButton = (Button) view.findViewById(R.id.menu_screen_logout_button);
@@ -81,6 +82,12 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mListener.goToMessages();
+            }
+        });
+        menuComposeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.goToComposeMessage();
             }
         });
         menuSettingsButton.setOnClickListener(new View.OnClickListener() {
@@ -144,13 +151,14 @@ public class MenuFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-         void goToAutoReply();
-         void goToLogin();
-         void goToMenu();
-         void goToContacts();
-         void goToMessageHistory();
-         void goToMessages();
+        void goToAutoReply();
+        void goToLogin();
+        void goToMenu();
+        void goToContacts();
+        void goToMessageHistory();
+        void goToMessages();
         void goToSettings();
+        void goToComposeMessage();
         void logOut();
     }
 }
