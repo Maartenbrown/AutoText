@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -96,6 +97,11 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         });
 
         goToMenu();
+    }
+
+    public void sendMessage() {
+        SmsManager smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage("Compose", null, "sms message", null, null);
     }
 
     @Override

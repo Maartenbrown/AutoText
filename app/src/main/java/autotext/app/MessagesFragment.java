@@ -91,6 +91,7 @@ public class MessagesFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();
