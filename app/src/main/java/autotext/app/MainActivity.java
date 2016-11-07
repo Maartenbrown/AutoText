@@ -100,8 +100,17 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     }
 
     public void sendMessage() {
+
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage("Compose", null, "sms message", null, null);
+        smsManager.sendTextMessage("4195650731", null, "AutoText Default message", null, null);
+    }
+
+    public void setMessageScheduled() {
+        //TODO: Save message info to DB
+    }
+
+    public void setMessageGPS() {
+        //TODO: Save message info to DB
     }
 
     @Override

@@ -24,7 +24,7 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom = "0dp"
             android:textSize = "16sp"
-            android:id="@+id/phone_number_text"
+            android:id="@+id/compose_message_phone"
             android:hint="Enter phone number here"
             android:inputType="phone"
             android:gravity="top"/>
