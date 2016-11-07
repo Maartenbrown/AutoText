@@ -2,6 +2,7 @@ package autotext.app;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDoneException;
 import android.database.sqlite.SQLiteStatement;
 
 import java.sql.PreparedStatement;
@@ -24,8 +25,29 @@ public class DatabaseManager {
         AutoReplyDBHelper helper = new AutoReplyDBHelper(this.context);
         this.db = helper.getWritableDatabase();
     }
-    public long addUser(String user, String pass){
+    public long checkUser(String user, String pass){
+        String sql ="SELECT "+T1Key+" FROM "+T1Name+" WHERE "+T1C1+" = ? AND "+T1C2+" = ? ";
+        SQLiteStatement state = db.compileStatement(sql);
+        state.bindString(1, user);
+        state.bindString(2, pass);
+        long res=-1;
+        try {
+            res =state.simpleQueryForLong();
+        }
+        catch (SQLiteDoneException e){
+            return res;
+        }
 
+
+        return res;
+    }
+    public long addUser(String user, String pass){
+        String sql2 ="SELECT "+T1Key+" FROM "+T1Name+" WHERE "+T1C1+" = ?";
+        SQLiteStatement test = db.compileStatement(sql2);
+        test.bindString(1, user);
+        if(test.simpleQueryForLong()>=0){
+            return -1;
+        }
         String sql = "INSERT INTO "+T1Name+"("+T1C1+", "+T1C2+") VALUES (?, ?)";
         SQLiteStatement state = db.compileStatement(sql);
         state.bindString(1,user);
