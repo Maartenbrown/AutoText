@@ -81,17 +81,42 @@ public class Login extends Fragment implements OnClickListener {
         String username = editUsername.getText().toString();
         String password = editPassword.getText().toString();
 
+        switch (view.getId()) {
+            case R.id.login_screen_login_button:
+                if (username.isEmpty()) {
+                    editUsername.setError("Username is required");
+                    return;
+                }
 
-        if(username.isEmpty()) {
-            editUsername.setError("Username is required");
-            return;
+                if (password.isEmpty()) {
+                    editPassword.setError("Password is required");
+                } else {
+                    long a = loginListener.checkLogin(username, password);
+                    if (a >= 0) {
+                        loginListener.onLogin(a);
+                    } else {
+                        editUsername.setError("Incorrect Username Password Combination");
+                    }
+                }
+                break;
+            case R.id.login_screen_new_user_button:
+                if (username.isEmpty()) {
+                    editUsername.setError("Username is required");
+                } else if (password.isEmpty()) {
+                    editPassword.setError("Password is required");
+                } else {
+                    long a = loginListener.newUser(username, password);
+                    if (a >= 0) {
+                        loginListener.onLogin(a);
+                    } else {
+                        editUsername.setError("Username already exists");
+                    }
+                }
+                break;
+            default:
+                break;
+
         }
-
-        if(password.isEmpty()) {
-            editPassword.setError("Password is required");
-        }
-
-        loginListener.onLogin();
     }
 
 
@@ -108,6 +133,8 @@ public class Login extends Fragment implements OnClickListener {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-        void onLogin();
+        void onLogin(long userID);
+        long checkLogin(String user, String pass);
+        long newUser(String user, String pass);
     }
 }

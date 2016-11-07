@@ -18,12 +18,15 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private final String TAG = "MAIN";
+    protected DatabaseManager data;
+    protected long uID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "Activity Created");
         setContentView(R.layout.activity_main);
+        data = new DatabaseManager(this.getApplicationContext());
         goToLogin();
     }
 
@@ -67,7 +70,16 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         goToLogin();
         //disable menu bar buttons here.
     }
-    public void onLogin(){
+    public long checkLogin(String user, String pass){
+        return data.checkUser(user, pass);
+    }
+    public long newUser(String user, String pass){
+
+            return data.addUser(user, pass);
+
+    }
+    public void onLogin(long userID){
+        uID = userID;
         Button go = (Button) findViewById(R.id.auto_reply_button);
         go.setOnClickListener(new View.OnClickListener() {
             @Override
