@@ -64,6 +64,7 @@ public class MenuFragment extends Fragment {
         Button menuSettingsButton = (Button) view.findViewById(R.id.menu_screen_settings_button);
         Button menuAutoreplyButton = (Button) view.findViewById(R.id.menu_screen_auto_reply_button);
         Button menuLogoutButton = (Button) view.findViewById(R.id.menu_screen_logout_button);
+        Button menuComposeMessageButton = (Button) view.findViewById(R.id.menu_screen_compose_button);
 
         menuContactsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,12 +96,19 @@ public class MenuFragment extends Fragment {
                 mListener.goToAutoReply();
             }
         });
+        menuComposeMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v) {
+                mListener.goToComposeMessage();
+            }
+        });
         menuLogoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.logOut();
             }
         });
+
         return view;
     }
 
@@ -152,5 +160,6 @@ public class MenuFragment extends Fragment {
          void goToMessages();
         void goToSettings();
         void logOut();
+        void goToComposeMessage();
     }
 }

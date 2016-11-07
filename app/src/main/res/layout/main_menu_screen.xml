@@ -34,15 +34,30 @@
             android:id="@+id/menu_screen_message_history_button"
             android:text="Message History"/>
         </LinearLayout>
-
-    <Button
-        android:layout_width="150dp"
-        android:layout_height="75dp"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="50dp"
-        android:id="@+id/menu_screen_messages_button"
-        android:text="Messages"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal" >
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="50dp"
+            android:id="@+id/menu_screen_messages_button"
+            android:text="Messages"/>
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="50dp"
+            android:id="@+id/menu_screen_compose_button"
+            android:text="New Message"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

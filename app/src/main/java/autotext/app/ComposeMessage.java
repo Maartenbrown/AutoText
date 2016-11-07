@@ -1,8 +1,6 @@
 package autotext.app;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +21,8 @@ import static java.util.Calendar.FRIDAY;
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.MONDAY;
+import static java.util.Calendar.SATURDAY;
+import static java.util.Calendar.SUNDAY;
 import static java.util.Calendar.THURSDAY;
 import static java.util.Calendar.TUESDAY;
 import static java.util.Calendar.WEDNESDAY;
@@ -52,6 +52,8 @@ public class ComposeMessage extends Fragment {
     private CheckBox wednesdayCheck;
     private CheckBox thursdayCheck;
     private CheckBox fridayCheck;
+    private CheckBox saturdayCheck;
+    private CheckBox sundayCheck;
     private CheckBox repeatCheck;
 
     private CheckBox gpsLeaveCheck;
@@ -98,6 +100,8 @@ public class ComposeMessage extends Fragment {
         wednesdayCheck = (CheckBox) view.findViewById(R.id.compose_message_wednesday);
         thursdayCheck = (CheckBox) view.findViewById(R.id.compose_message_thursday);
         fridayCheck = (CheckBox) view.findViewById(R.id.compose_message_friday);
+        saturdayCheck = (CheckBox) view.findViewById(R.id.compose_message_saturday);
+        sundayCheck = (CheckBox) view.findViewById(R.id.compose_message_sunday);
         repeatCheck = (CheckBox) view.findViewById(R.id.compose_message_repeat);
 
         gpsLeaveCheck = (CheckBox) view.findViewById(R.id.compose_message_leave_gps);
@@ -107,9 +111,14 @@ public class ComposeMessage extends Fragment {
         wifiConnectCheck = (CheckBox) view.findViewById(R.id.compose_message_wifi_connect);
         wifiDisconnectCheck = (CheckBox) view.findViewById(R.id.compose_message_wifi_disconnect);
 
-
         timePicker = (TimePicker) view.findViewById(R.id.compose_time_picker);
 
+        saveMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v) {
+                saveMessage();
+            }
+        });
 
         return view;
     }
@@ -161,6 +170,8 @@ public class ComposeMessage extends Fragment {
         wednesdayCheck.setEnabled(false);
         thursdayCheck.setEnabled(false);
         fridayCheck.setEnabled(false);
+        saturdayCheck.setEnabled(false);
+        sundayCheck.setEnabled(false);
         repeatCheck.setEnabled(false);
         cellEnterCheck.setEnabled(false);
         cellLeaveCheck.setEnabled(false);
@@ -180,6 +191,8 @@ public class ComposeMessage extends Fragment {
         wednesdayCheck.setEnabled(false);
         thursdayCheck.setEnabled(false);
         fridayCheck.setEnabled(false);
+        saturdayCheck.setEnabled(false);
+        sundayCheck.setEnabled(false);
         repeatCheck.setEnabled(false);
         gpsEnterCheck.setEnabled(false);
         gpsLeaveCheck.setEnabled(false);
@@ -200,11 +213,13 @@ public class ComposeMessage extends Fragment {
         wednesdayCheck.setEnabled(false);
         thursdayCheck.setEnabled(false);
         fridayCheck.setEnabled(false);
+        saturdayCheck.setEnabled(false);
+        sundayCheck.setEnabled(false);
         repeatCheck.setEnabled(false);
         gpsEnterCheck.setEnabled(false);
         gpsLeaveCheck.setEnabled(false);
-        cellEnterCheck.setEnabled(false);
-        cellLeaveCheck.setEnabled(false);
+        wifiConnectCheck.setEnabled(false);
+        wifiDisconnectCheck.setEnabled(false);
 
         isCellMessage = true;
 
@@ -219,6 +234,8 @@ public class ComposeMessage extends Fragment {
         wednesdayCheck.setEnabled(true);
         thursdayCheck.setEnabled(true);
         fridayCheck.setEnabled(true);
+        saturdayCheck.setEnabled(true);
+        sundayCheck.setEnabled(true);
         repeatCheck.setEnabled(true);
         cellEnterCheck.setEnabled(true);
         cellLeaveCheck.setEnabled(true);
@@ -233,35 +250,8 @@ public class ComposeMessage extends Fragment {
         isWifiMessage = false;
     }
 
-    public void onClick(View view) {
-
+    private void saveMessage() {
         Calendar calendar = Calendar.getInstance();
-
-
-        if (mondayCheck.isChecked() || tuesdayCheck.isChecked() || wednesdayCheck.isChecked() ||
-                thursdayCheck.isChecked() || fridayCheck.isChecked() || repeatCheck.isChecked()) {
-            onScheduleMessage();
-        } else {
-            reEnableAll();
-        }
-
-        if (gpsEnterCheck.isChecked() || gpsLeaveCheck.isChecked()) {
-            onGpsMessage();
-        } else {
-            reEnableAll();
-        }
-
-        if (cellEnterCheck.isChecked() || cellLeaveCheck.isChecked()) {
-            onCellMessage();
-        } else {
-            reEnableAll();
-        }
-
-        if (wifiConnectCheck.isChecked() || wifiDisconnectCheck.isChecked()) {
-            onWifiMessage();
-        } else {
-            reEnableAll();
-        }
 
         if (saveMessageButton.isPressed()) {
             String message = editMessage.getText().toString();
@@ -271,7 +261,31 @@ public class ComposeMessage extends Fragment {
                 editMessage.setError("Message text is required!");
                 return;
             }
+            if(phoneNumber.isEmpty()) {
+                editPhoneNumber.setError("Phone number is required!");
+                return;
+            } else if (phoneNumber.length() != 10) {
+                editPhoneNumber.setError("Phone number must be 10 digits!");
+                return;
+            }
 
+            if (mondayCheck.isChecked() || tuesdayCheck.isChecked() || wednesdayCheck.isChecked() ||
+                    thursdayCheck.isChecked() || fridayCheck.isChecked() || repeatCheck.isChecked()
+                    || saturdayCheck.isChecked() || sundayCheck.isChecked()) {
+                onScheduleMessage();
+            }
+
+            if (gpsEnterCheck.isChecked() || gpsLeaveCheck.isChecked()) {
+                onGpsMessage();
+            }
+
+            if (cellEnterCheck.isChecked() || cellLeaveCheck.isChecked()) {
+                onCellMessage();
+            }
+
+            if (wifiConnectCheck.isChecked() || wifiDisconnectCheck.isChecked()) {
+                onWifiMessage();
+            }
 
             if(isScheduledMessage) {
                 calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
@@ -280,7 +294,6 @@ public class ComposeMessage extends Fragment {
                 if (mondayCheck.isChecked()) {
                     calendar.set(Calendar.DAY_OF_WEEK, MONDAY);
                     Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Monday!");
-
                 }
                 if (tuesdayCheck.isChecked()) {
                     calendar.set(Calendar.DAY_OF_WEEK, TUESDAY);
@@ -298,15 +311,23 @@ public class ComposeMessage extends Fragment {
                     calendar.set(Calendar.DAY_OF_WEEK, FRIDAY);
                     Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Friday!");
                 }
+                if (saturdayCheck.isChecked()) {
+                    calendar.set(Calendar.DAY_OF_WEEK, SATURDAY);
+                    Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Saturday!");
+                }
+                if (sundayCheck.isChecked()) {
+                    calendar.set(Calendar.DAY_OF_WEEK, SUNDAY);
+                    Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Sunday!");
+                }
                 if (repeatCheck.isChecked()) {
                     Log.d(TAG, "Message will repeat weekly");
                 }
 
             } else if (isCellMessage) {
                 if (cellEnterCheck.isChecked()) {
-                    Log.d(TAG, "Message set to send when entering Cell Tower");
+                    Log.d(TAG, "Message set to send when entering Cell tower radius");
                 } else if (cellLeaveCheck.isChecked()) {
-                    Log.d(TAG, "Message set to send when leaving Cell Tower");
+                    Log.d(TAG, "Message set to send when leaving Cell tower radius");
                 } else {
                     Log.d(TAG, "ERROR in cell settings");
                 }
@@ -323,7 +344,7 @@ public class ComposeMessage extends Fragment {
             } else if (isGpsMessage) {
                 if (gpsEnterCheck.isChecked()) {
                     Log.d(TAG, "Message set to send when entering GPS location");
-                } else if (cellLeaveCheck.isChecked()) {
+                } else if (gpsLeaveCheck.isChecked()) {
                     Log.d(TAG, "Message set to send when leaving GPS location");
                 } else {
                     Log.d(TAG, "ERROR in GPS settings");
@@ -333,9 +354,11 @@ public class ComposeMessage extends Fragment {
 
             }
         }
+    }
+
+    private void onClick(View view) {
 
 
-        //composeListener.sendMessage();
     }
 
     /**
@@ -351,8 +374,6 @@ public class ComposeMessage extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-        void sendMessage();
-        void setMessageScheduled();
-        void setMessageGPS();
+
     }
 }
