@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         MenuFragment.OnFragmentInteractionListener, Login.OnFragmentInteractionListener,
         HistoryFragment.OnFragmentInteractionListener, MessagesFragment.OnFragmentInteractionListener,
         ContactsFragment.OnFragmentInteractionListener, ConversationFragment.OnFragmentInteractionListener,
-        ComposeMessage.OnFragmentInteractionListener, Settings.OnFragmentInteractionListener {
+        Settings.OnFragmentInteractionListener {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private final String TAG = "MAIN";
@@ -117,21 +117,18 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     }
 
     public void sendMessage() {
-
+        String message = "test";
+        String phoneNumber = "5555555555";
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage("4195650731", null, "AutoText Default message", null, null);
+        smsManager.sendTextMessage(phoneNumber, null, message, null, null);
     }
 
-    public void setMessageScheduled() {
-        //TODO: Save message info to DB
-    }
 
-    public void setMessageGPS() {
-        //TODO: Save message info to DB
-    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+
 }

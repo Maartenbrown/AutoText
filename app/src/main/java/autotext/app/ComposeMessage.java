@@ -43,7 +43,10 @@ public class ComposeMessage extends Fragment {
     private final String TAG = "COMPOSE_MESSAGE";
 
     public EditText editMessage;
+    private String message;
     public EditText editPhoneNumber;
+    private String phoneNumber;
+    public EditText editWifiName;
 
     DatabaseManager databaseManager;
     private Button saveMessageButton;
@@ -62,6 +65,7 @@ public class ComposeMessage extends Fragment {
     private CheckBox gpsEnterCheck;
     private CheckBox wifiConnectCheck;
     private CheckBox wifiDisconnectCheck;
+    private int leaveEnter;
 
     public long wifiCond;
     public long gpsCond;
@@ -96,6 +100,7 @@ public class ComposeMessage extends Fragment {
 
         editMessage = (EditText) view.findViewById(R.id.compose_message_text);
         editPhoneNumber = (EditText) view.findViewById(R.id.compose_message_phone);
+        editWifiName = (EditText) view.findViewById(R.id.compose_wifi_name);
         saveMessageButton = (Button) view.findViewById(R.id.compose_message_save);
 
         mondayCheck = (CheckBox) view.findViewById(R.id.compose_message_monday);
@@ -224,9 +229,10 @@ public class ComposeMessage extends Fragment {
         Calendar calendar = Calendar.getInstance();
 
         if (saveMessageButton.isPressed()) {
-            String message = editMessage.getText().toString();
-            String phoneNumber = editPhoneNumber.getText().toString();
+            message= editMessage.getText().toString();
+            phoneNumber = editPhoneNumber.getText().toString();
             onOff = 1;
+
             if(message.isEmpty()) {
                 editMessage.setError("Message text is required!");
                 return;
@@ -256,9 +262,11 @@ public class ComposeMessage extends Fragment {
             if(isScheduledMessage) {
                 calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
                 calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
-                wifiCond = databaseManager.addWiFiCondition("null", 0);
+                String wifiName = "null";
+                wifiCond = databaseManager.addWiFiCondition(wifiName, 1);
                 gpsCond = databaseManager.addGPSCondition(0, 0, 0, 0);
                 messageCond = databaseManager.addMessageCond((int) wifiCond, (int) gpsCond);
+                leaveEnter = 0;
 
                 if (repeatCheck.isChecked()) {
                     repeat = 1;
@@ -305,29 +313,43 @@ public class ComposeMessage extends Fragment {
 
 
             } else if (isWifiMessage) {
-                wifiCond = databaseManager.addWiFiCondition("null", 0);
+                String wifiName = editWifiName.getText().toString();
                 gpsCond = databaseManager.addGPSCondition(0, 0, 0, 0);
-                messageCond = databaseManager.addMessageCond((int) wifiCond, (int) gpsCond);
-
+                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+                calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
+                repeat = 0;
                 if (wifiConnectCheck.isChecked()) {
-                    databaseManager.addWiFiCondition("osuwireless", 0);
-                    Log.d(TAG, "Message set to send when connecting to WiFi network");
+                    leaveEnter = 0;
+                    databaseManager.addWiFiCondition(wifiName, leaveEnter);
+                    messageCond = databaseManager.addMessageCond((int) wifiCond, (int) gpsCond);
+                    databaseManager.addProgMessage(message, HOUR_OF_DAY, MINUTE, "null" , repeat, onOff, (int) messageCond, 1);
+                    Log.d(TAG, "Message set to send when connecting to WiFi network: " + wifiName);
                 } else if (wifiDisconnectCheck.isChecked()) {
-                    databaseManager.addWiFiCondition("osuwireless", 1);
-                    Log.d(TAG, "Message set to send when disconnecting from WiFi network");
+                    leaveEnter = 1;
+                    databaseManager.addWiFiCondition(wifiName, leaveEnter);
+                    messageCond = databaseManager.addMessageCond((int) wifiCond, (int) gpsCond);
+                    databaseManager.addProgMessage(message, HOUR_OF_DAY, MINUTE, "null" , repeat, onOff, (int) messageCond, 1);
+                    Log.d(TAG, "Message set to send when disconnecting from WiFi network: " + wifiName);
                 } else {
                     Log.d(TAG, "ERROR in WiFi settings");
                 }
 
             } else if (isGpsMessage) {
+                //TODO: Add GPS coordinates from Google Maps
                 long latitude = 40;
                 long longitude = 83;
                 long radius = 50;
+                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+                calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
+                String wifiName = "null";
+                wifiCond = databaseManager.addWiFiCondition(wifiName, 0);
                 if (gpsEnterCheck.isChecked()) {
-                    databaseManager.addGPSCondition(longitude, latitude, radius, 0);
+                    leaveEnter = 1;
+                    databaseManager.addGPSCondition(longitude, latitude, radius, leaveEnter);
                     Log.d(TAG, "Message set to send when entering GPS location");
                 } else if (gpsLeaveCheck.isChecked()) {
-                    databaseManager.addGPSCondition(longitude, latitude, radius, 1);
+                    leaveEnter = 1;
+                    databaseManager.addGPSCondition(longitude, latitude, radius, leaveEnter);
                     Log.d(TAG, "Message set to send when leaving GPS location");
                 } else {
                     Log.d(TAG, "ERROR in GPS settings");
@@ -339,8 +361,12 @@ public class ComposeMessage extends Fragment {
         }
     }
 
-    private void onClick(View view) {
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
+    public String getMessage() {
+        return message;
     }
 
     /**
@@ -356,6 +382,8 @@ public class ComposeMessage extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+        String getPhoneNumber();
+        String getMessage();
 
     }
 }
