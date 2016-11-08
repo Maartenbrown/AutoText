@@ -361,13 +361,6 @@ public class ComposeMessage extends Fragment {
         }
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -382,8 +375,8 @@ public class ComposeMessage extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-        String getPhoneNumber();
-        String getMessage();
+//        String getPhoneNumber();
+//        String getMessage();
 
     }
 }
