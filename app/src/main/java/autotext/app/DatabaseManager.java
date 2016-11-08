@@ -93,7 +93,7 @@ public class DatabaseManager {
     public long addWiFiCondition(String name, int leaveEnter){
         String sql = "INSERT INTO "+T6Name+"("+T6C1+", "+T6C2+") VALUES (?, ?)";
         SQLiteStatement state = db.compileStatement(sql);
-        state.bindString(1,name);
+        state.bindString(1, name);
         state.bindLong(2, leaveEnter);
         return state.executeInsert();
     }

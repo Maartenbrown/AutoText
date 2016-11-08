@@ -123,7 +123,21 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         smsManager.sendTextMessage(phoneNumber, null, message, null, null);
     }
 
-
+    public long addGPSCondition(double longi, double lat, double radius, int leaveEnter){
+        return data.addGPSCondition(longi, lat, radius, leaveEnter);
+    }
+    public long addWiFiCondition(String name, int leaveEnter){
+        return data.addWiFiCondition(name, leaveEnter);
+    }
+    public long addProgMessage(String text, int hour, int minute, String days, int repeat, int onOff, int condition, int user){
+        return data.addProgMessage(text, hour, minute, days, repeat, onOff, condition, user);
+    }
+    public long addMessageCond(int wifiCond, int gpsCond){
+        return data.addMessageCond(wifiCond, gpsCond);
+    }
+    public long getUserID(){
+        return uID;
+    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
