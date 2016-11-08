@@ -45,6 +45,7 @@ public class ComposeMessage extends Fragment {
     public EditText editMessage;
     public EditText editPhoneNumber;
 
+    DatabaseManager databaseManager;
     private Button saveMessageButton;
 
     private CheckBox mondayCheck;
@@ -55,21 +56,23 @@ public class ComposeMessage extends Fragment {
     private CheckBox saturdayCheck;
     private CheckBox sundayCheck;
     private CheckBox repeatCheck;
+    private int repeat;
 
     private CheckBox gpsLeaveCheck;
     private CheckBox gpsEnterCheck;
-    private CheckBox cellLeaveCheck;
-    private CheckBox cellEnterCheck;
     private CheckBox wifiConnectCheck;
     private CheckBox wifiDisconnectCheck;
 
-
+    public long wifiCond;
+    public long gpsCond;
+    public long messageCond;
+    public int onOff;
     private TimePicker timePicker;
 
     private boolean isScheduledMessage;
     private boolean isGpsMessage;
     private boolean isWifiMessage;
-    private boolean isCellMessage;
+
 
     public ComposeMessage() {
         // Required empty public constructor
@@ -106,8 +109,6 @@ public class ComposeMessage extends Fragment {
 
         gpsLeaveCheck = (CheckBox) view.findViewById(R.id.compose_message_leave_gps);
         gpsEnterCheck = (CheckBox) view.findViewById(R.id.compose_message_enter_gps);
-        cellLeaveCheck = (CheckBox) view.findViewById(R.id.compose_message_leave_cell_tower);
-        cellEnterCheck = (CheckBox) view.findViewById(R.id.compose_message_enter_cell_tower);
         wifiConnectCheck = (CheckBox) view.findViewById(R.id.compose_message_wifi_connect);
         wifiDisconnectCheck = (CheckBox) view.findViewById(R.id.compose_message_wifi_disconnect);
 
@@ -152,14 +153,12 @@ public class ComposeMessage extends Fragment {
     private void onScheduleMessage () {
         gpsLeaveCheck.setEnabled(false);
         gpsEnterCheck.setEnabled(false);
-        cellEnterCheck.setEnabled(false);
-        cellLeaveCheck.setEnabled(false);
         wifiConnectCheck.setEnabled(false);
         wifiDisconnectCheck.setEnabled(false);
 
         isScheduledMessage = true;
 
-        isCellMessage = false;
+
         isGpsMessage = false;
         isWifiMessage = false;
     }
@@ -173,15 +172,12 @@ public class ComposeMessage extends Fragment {
         saturdayCheck.setEnabled(false);
         sundayCheck.setEnabled(false);
         repeatCheck.setEnabled(false);
-        cellEnterCheck.setEnabled(false);
-        cellLeaveCheck.setEnabled(false);
         wifiDisconnectCheck.setEnabled(false);
         wifiConnectCheck.setEnabled(false);
 
         isGpsMessage = true;
 
         isScheduledMessage = false;
-        isCellMessage = false;
         isWifiMessage = false;
     }
 
@@ -196,36 +192,12 @@ public class ComposeMessage extends Fragment {
         repeatCheck.setEnabled(false);
         gpsEnterCheck.setEnabled(false);
         gpsLeaveCheck.setEnabled(false);
-        cellEnterCheck.setEnabled(false);
-        cellLeaveCheck.setEnabled(false);
 
         isWifiMessage = true;
 
         isScheduledMessage = false;
-        isCellMessage = false;
         isGpsMessage = false;
 
-    }
-
-    private void onCellMessage() {
-        mondayCheck.setEnabled(false);
-        tuesdayCheck.setEnabled(false);
-        wednesdayCheck.setEnabled(false);
-        thursdayCheck.setEnabled(false);
-        fridayCheck.setEnabled(false);
-        saturdayCheck.setEnabled(false);
-        sundayCheck.setEnabled(false);
-        repeatCheck.setEnabled(false);
-        gpsEnterCheck.setEnabled(false);
-        gpsLeaveCheck.setEnabled(false);
-        wifiConnectCheck.setEnabled(false);
-        wifiDisconnectCheck.setEnabled(false);
-
-        isCellMessage = true;
-
-        isScheduledMessage = false;
-        isGpsMessage = false;
-        isWifiMessage = false;
     }
 
     private void reEnableAll() {
@@ -237,14 +209,12 @@ public class ComposeMessage extends Fragment {
         saturdayCheck.setEnabled(true);
         sundayCheck.setEnabled(true);
         repeatCheck.setEnabled(true);
-        cellEnterCheck.setEnabled(true);
-        cellLeaveCheck.setEnabled(true);
         wifiConnectCheck.setEnabled(true);
         wifiDisconnectCheck.setEnabled(true);
         gpsLeaveCheck.setEnabled(true);
         gpsEnterCheck.setEnabled(true);
 
-        isCellMessage = false;
+
         isScheduledMessage = false;
         isGpsMessage = false;
         isWifiMessage = false;
@@ -256,7 +226,7 @@ public class ComposeMessage extends Fragment {
         if (saveMessageButton.isPressed()) {
             String message = editMessage.getText().toString();
             String phoneNumber = editPhoneNumber.getText().toString();
-
+            onOff = 1;
             if(message.isEmpty()) {
                 editMessage.setError("Message text is required!");
                 return;
@@ -279,10 +249,6 @@ public class ComposeMessage extends Fragment {
                 onGpsMessage();
             }
 
-            if (cellEnterCheck.isChecked() || cellLeaveCheck.isChecked()) {
-                onCellMessage();
-            }
-
             if (wifiConnectCheck.isChecked() || wifiDisconnectCheck.isChecked()) {
                 onWifiMessage();
             }
@@ -290,61 +256,78 @@ public class ComposeMessage extends Fragment {
             if(isScheduledMessage) {
                 calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
                 calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
+                wifiCond = databaseManager.addWiFiCondition("null", 0);
+                gpsCond = databaseManager.addGPSCondition(0, 0, 0, 0);
+                messageCond = databaseManager.addMessageCond((int) wifiCond, (int) gpsCond);
+
+                if (repeatCheck.isChecked()) {
+                    repeat = 1;
+                    Log.d(TAG, "Message will repeat weekly");
+                } else {
+                    repeat = 0;
+                }
 
                 if (mondayCheck.isChecked()) {
                     calendar.set(Calendar.DAY_OF_WEEK, MONDAY);
+                    databaseManager.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Monday" , repeat, onOff, (int) messageCond, 1);
                     Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Monday!");
                 }
                 if (tuesdayCheck.isChecked()) {
                     calendar.set(Calendar.DAY_OF_WEEK, TUESDAY);
+                    databaseManager.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Tuesday" , repeat, onOff, (int) messageCond, 1);
                     Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Tuesday!");
                 }
                 if (wednesdayCheck.isChecked()) {
                     calendar.set(Calendar.DAY_OF_WEEK, WEDNESDAY);
+                    databaseManager.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Wednesday" , repeat, onOff, (int) messageCond, 1);
                     Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Wednesday!");
                 }
                 if (thursdayCheck.isChecked()) {
                     calendar.set(Calendar.DAY_OF_WEEK, THURSDAY);
+                    databaseManager.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Thursday" , repeat, onOff, (int) messageCond, 1);
                     Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Thursday!");
                 }
                 if (fridayCheck.isChecked()) {
                     calendar.set(Calendar.DAY_OF_WEEK, FRIDAY);
+                    databaseManager.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Friday" , repeat, onOff, (int) messageCond, 1);
                     Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Friday!");
                 }
                 if (saturdayCheck.isChecked()) {
                     calendar.set(Calendar.DAY_OF_WEEK, SATURDAY);
+                    databaseManager.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Saturday" , repeat, onOff, (int) messageCond, 1);
                     Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Saturday!");
                 }
                 if (sundayCheck.isChecked()) {
                     calendar.set(Calendar.DAY_OF_WEEK, SUNDAY);
+                    databaseManager.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Sunday" , repeat, onOff, (int) messageCond, 1);
                     Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Sunday!");
                 }
-                if (repeatCheck.isChecked()) {
-                    Log.d(TAG, "Message will repeat weekly");
-                }
 
-            } else if (isCellMessage) {
-                if (cellEnterCheck.isChecked()) {
-                    Log.d(TAG, "Message set to send when entering Cell tower radius");
-                } else if (cellLeaveCheck.isChecked()) {
-                    Log.d(TAG, "Message set to send when leaving Cell tower radius");
-                } else {
-                    Log.d(TAG, "ERROR in cell settings");
-                }
 
             } else if (isWifiMessage) {
+                wifiCond = databaseManager.addWiFiCondition("null", 0);
+                gpsCond = databaseManager.addGPSCondition(0, 0, 0, 0);
+                messageCond = databaseManager.addMessageCond((int) wifiCond, (int) gpsCond);
+
                 if (wifiConnectCheck.isChecked()) {
+                    databaseManager.addWiFiCondition("osuwireless", 0);
                     Log.d(TAG, "Message set to send when connecting to WiFi network");
                 } else if (wifiDisconnectCheck.isChecked()) {
+                    databaseManager.addWiFiCondition("osuwireless", 1);
                     Log.d(TAG, "Message set to send when disconnecting from WiFi network");
                 } else {
                     Log.d(TAG, "ERROR in WiFi settings");
                 }
 
             } else if (isGpsMessage) {
+                long latitude = 40;
+                long longitude = 83;
+                long radius = 50;
                 if (gpsEnterCheck.isChecked()) {
+                    databaseManager.addGPSCondition(longitude, latitude, radius, 0);
                     Log.d(TAG, "Message set to send when entering GPS location");
                 } else if (gpsLeaveCheck.isChecked()) {
+                    databaseManager.addGPSCondition(longitude, latitude, radius, 1);
                     Log.d(TAG, "Message set to send when leaving GPS location");
                 } else {
                     Log.d(TAG, "ERROR in GPS settings");
@@ -357,7 +340,6 @@ public class ComposeMessage extends Fragment {
     }
 
     private void onClick(View view) {
-
 
     }
 

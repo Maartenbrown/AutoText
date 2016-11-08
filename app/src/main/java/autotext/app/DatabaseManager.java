@@ -45,14 +45,17 @@ public class DatabaseManager {
         String sql2 ="SELECT "+T1Key+" FROM "+T1Name+" WHERE "+T1C1+" = ?";
         SQLiteStatement test = db.compileStatement(sql2);
         test.bindString(1, user);
-        if(test.simpleQueryForLong()>=0){
-            return -1;
+        try {
+            test.simpleQueryForLong();
         }
-        String sql = "INSERT INTO "+T1Name+"("+T1C1+", "+T1C2+") VALUES (?, ?)";
-        SQLiteStatement state = db.compileStatement(sql);
-        state.bindString(1,user);
-        state.bindString(2, pass);
-        return state.executeInsert();
+        catch (SQLiteDoneException e) {
+            String sql = "INSERT INTO "+T1Name+"("+T1C1+", "+T1C2+") VALUES (?, ?)";
+            SQLiteStatement state = db.compileStatement(sql);
+            state.bindString(1,user);
+            state.bindString(2, pass);
+            return state.executeInsert();
+        }
+        return -1;
     }
     public long addContact(String name, int user){
         String sql = "INSERT INTO "+T2Name+"("+T2C1+", "+T2C2+") VALUES (?, ?)";
@@ -87,15 +90,15 @@ public class DatabaseManager {
         state.bindString(2, name);
         return state.executeInsert();
     }
-    public long addWiFiConition(String name, int leaveEnter){
+    public long addWiFiCondition(String name, int leaveEnter){
         String sql = "INSERT INTO "+T6Name+"("+T6C1+", "+T6C2+") VALUES (?, ?)";
         SQLiteStatement state = db.compileStatement(sql);
         state.bindString(1,name);
         state.bindLong(2, leaveEnter);
         return state.executeInsert();
     }
-    public long addGPSCondition(double longi, double lat, double radius){
-        String sql = "INSERT INTO "+T7Name+"("+T7C1+", "+T7C2+", "+T7C3+") VALUES (?, ?, ?)";
+    public long addGPSCondition(double longi, double lat, double radius, int leaveEnter){
+        String sql = "INSERT INTO "+T7Name+"("+T7C1+", "+T7C2+", "+T7C3+", "+T7C4+") VALUES (?, ?, ?, ?)";
         SQLiteStatement state = db.compileStatement(sql);
         state.bindDouble(1, longi);
         state.bindDouble(2, lat);
@@ -109,12 +112,12 @@ public class DatabaseManager {
         state.bindLong(2, gpsCond);
         return state.executeInsert();
     }
-    public long addProgMessage(String text, String startTime, String endTime, String days, int repeat, int onOff, int condition, int user){
+    public long addProgMessage(String text, int hour, int minute, String days, int repeat, int onOff, int condition, int user){
         String sql = "INSERT INTO " +T9Name+"("+T9C1+", "+T9C2+", "+T9C3+", "+T9C4+", "+T9C5+", "+T9C6+", "+T9C7+", "+T9C8+") VALUES (?,?,?,?,?,?,?,?)";
         SQLiteStatement state = db.compileStatement(sql);
         state.bindString(1,text);
-        state.bindString(2,startTime);
-        state.bindString(3,endTime);
+        state.bindLong(2,hour);
+        state.bindLong(3,minute);
         state.bindString(4,days);
         state.bindLong(5, repeat);
         state.bindLong(6, onOff);
