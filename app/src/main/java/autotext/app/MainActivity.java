@@ -1,13 +1,21 @@
 package autotext.app;
 
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.text.format.Time;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import static java.util.concurrent.TimeUnit.*;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 
 
 public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener,
@@ -20,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     private final String TAG = "MAIN";
     protected DatabaseManager data;
     protected long uID;
+    private final ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,11 +125,30 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         goToMenu();
     }
 
-    public void sendMessage() {
-        String message = "test";
-        String phoneNumber = "5555555555";
+    public void sendMessage(String message, String phoneNumber) {
+
+        phoneNumber = "6146685996";
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+    }
+    public void checkMessageRepeat(){
+        final Runnable check = new Runnable(){
+            public void run(){
+                //check messages goes here
+                //get saved messages
+                Time n = new Time();
+                n.setToNow();
+                try (Cursor cursor = data.getActiveProgMessages(n)) {//gets only on and day active messages
+                    while (cursor.moveToNext()) {
+                        //check their condition
+
+                        //call send message with them
+                    }
+                }
+
+            }
+        };
+        final ScheduledFuture<?> checkHandler = schedule.scheduleWithFixedDelay(check, 300,300, SECONDS);
     }
 
     public long addGPSCondition(double longi, double lat, double radius, int leaveEnter){

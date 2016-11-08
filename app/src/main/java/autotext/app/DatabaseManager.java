@@ -1,9 +1,12 @@
 package autotext.app;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDoneException;
 import android.database.sqlite.SQLiteStatement;
+import android.text.format.Time;
+import android.util.Pair;
 
 import java.sql.PreparedStatement;
 
@@ -133,4 +136,35 @@ public class DatabaseManager {
         state.bindLong(2, phoneContact);
         return state.executeInsert();
     }
+    public Cursor getActiveProgMessages(Time now){
+        String sql = "Select * FROM "+T9Name+" WHERE "+T9C6+" = 0 AND "+T9C4+" = ?";
+        String[] S = new String[1];
+        switch(now.weekDay){
+            case(0):
+                S[0] = "Monday";
+                break;
+            case(1):
+                S[0] = "Tuesday";
+                break;
+            case(2):
+                S[0] = "Wednesday";
+                break;
+            case(3):
+                S[0] = "Thursday";
+                break;
+            case(4):
+                S[0] = "Friday";
+                break;
+            case(5):
+                S[0] = "Saturday";
+                break;
+            case(6):
+                S[0] = "Sunday";
+                break;
+
+
+        }
+        return db.rawQuery(sql,S);
+    }
+
 }
