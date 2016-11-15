@@ -231,7 +231,7 @@ public class ComposeMessage extends Fragment {
         if (saveMessageButton.isPressed()) {
             message= editMessage.getText().toString();
             phoneNumber = editPhoneNumber.getText().toString();
-            onOff = 1;
+            onOff = 0;
 
             if(message.isEmpty()) {
                 editMessage.setError("Message text is required!");
@@ -282,8 +282,8 @@ public class ComposeMessage extends Fragment {
                 }
                 if (tuesdayCheck.isChecked()) {
                     calendar.set(Calendar.DAY_OF_WEEK, TUESDAY);
-                    composeListener.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Tuesday" , repeat, onOff, (int) messageCond, (int) composeListener.getUserID());
-                    Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Tuesday!");
+                    Long a =composeListener.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Tuesday" , repeat, onOff, (int) messageCond, (int) composeListener.getUserID());
+                    Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Tuesday!, message number"+a);
                 }
                 if (wednesdayCheck.isChecked()) {
                     calendar.set(Calendar.DAY_OF_WEEK, WEDNESDAY);

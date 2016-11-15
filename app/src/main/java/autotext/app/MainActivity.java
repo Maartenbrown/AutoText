@@ -12,10 +12,11 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import static java.util.concurrent.TimeUnit.*;
-
+import static autotext.app.AutoReplyDBHelper.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener,
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         setContentView(R.layout.activity_main);
         data = new DatabaseManager(this.getApplicationContext());
         goToLogin();
+
     }
 
     public void goToAutoReply() {
@@ -123,11 +125,12 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         });
 
         goToMenu();
+        checkMessageRepeat();
     }
 
     public void sendMessage(String message, String phoneNumber) {
 
-        phoneNumber = "6146685996";
+
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phoneNumber, null, message, null, null);
     }
@@ -138,17 +141,83 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
                 //get saved messages
                 Time n = new Time();
                 n.setToNow();
-                try (Cursor cursor = data.getActiveProgMessages(n)) {//gets only on and day active messages
-                    while (cursor.moveToNext()) {
-                        //check their condition
 
+                Cursor cursor = data.getActiveProgMessages(n); //gets only on and day active messages
+                    String[] names = cursor.getColumnNames();//gets names of columns
+
+                    System.out.println(cursor.getCount());
+                    while (cursor.moveToNext()) {
+                        boolean send = true;
+                        //check their conditions
+                        //determine which column is time(s)
+                        int i=0;
+                        for(int j=0;j< names.length;j++){
+                            if(names.equals(T9C2)){
+                                i=j;
+                            }
+                        }
+                        //check Time
+                        int h =cursor.getInt(i);
+                        int m = cursor.getInt(i+1);
+                        int min = n.minute-5;//check 5 minutes from current time
+                        int hr = (n.hour);
+                        if(min<0){
+                            min +=60;//adjust hour and minute for winding back time
+                            hr -=1;
+                            if(hr<0){
+                                hr+=24;
+                            }
+                        }
+                        if(h<=hr||h>n.hour||m<=min||m>n.minute){//if outside time, then don't send
+                            send = false;
+                            Log.d("checking","not right tme, not sending");
+                        }
+                        //check wifi settings
+                        i=0;
+                        for(int j=0;j< names.length;j++){
+                            if(names.equals(T6C1)){
+                                i=j;
+                            }
+                        }
+                        String wiName = cursor.getString(i);
+                        if(!(wiName.equals("None")||wiName.equals("null"))){//check if real value
+                            //actually check if correct wifi is connected
+                            send = false;
+                            Log.d("checking","wifi not connecting not sending");
+                        }
+
+                        //check gps settings
+                        i=0;
+                        for(int j=0;j< names.length;j++){
+                            if(names.equals(T7C1)){//get long
+                                i=j;
+                            }
+                        }
+                        if(!(cursor.getDouble(i+2)==0)){//if radius is not 0
+                            //check against current location
+                            send = false;
+                            Log.d("checking","radius not 0, not sending");
+                        }
+
+
+                        //determine which column is messageText
+                        i=0;
+                        for(int j=0;j< names.length;j++){
+                            if(names.equals(T9C1)){
+                                i=j;
+                            }
+                        }
                         //call send message with them
+                        if(send){
+                            Log.d("Sendng","Sending a message");
+                            sendMessage(cursor.getString(i), "614668596");//placeholder phone number
+                        }
                     }
+                    Log.d("in checker","checked messages");
                 }
 
-            }
-        };
-        final ScheduledFuture<?> checkHandler = schedule.scheduleWithFixedDelay(check, 300,300, SECONDS);
+            };
+        final ScheduledFuture<?> checkHandler = schedule.scheduleWithFixedDelay(check, 30,300, SECONDS);
     }
 
     public long addGPSCondition(double longi, double lat, double radius, int leaveEnter){

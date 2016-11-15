@@ -106,6 +106,7 @@ public class DatabaseManager {
         state.bindDouble(1, longi);
         state.bindDouble(2, lat);
         state.bindDouble(3, radius);
+        state.bindLong(4, leaveEnter);
         return state.executeInsert();
     }
     public long addMessageCond(int wifiCond, int gpsCond){
@@ -137,33 +138,37 @@ public class DatabaseManager {
         return state.executeInsert();
     }
     public Cursor getActiveProgMessages(Time now){
-        String sql = "Select * FROM "+T9Name+" WHERE "+T9C6+" = 0 AND "+T9C4+" = ?";
+        String sql = "Select * FROM "+T9Name+
+                " JOIN "+T8Name+" ON ("+T9C7+" = "+T8Key+
+                ") JOIN "+T7Name+" ON ("+T8C2+" = "+T7Key+
+                ") JOIN "+T6Name+" ON ("+T8C1+" = "+T6Key+
+                ") WHERE (("+T9C6+" = 0) AND ("+T9C4+" = ?));";
         String[] S = new String[1];
         switch(now.weekDay){
-            case(0):
+            case(1):
                 S[0] = "Monday";
                 break;
-            case(1):
+            case(2):
                 S[0] = "Tuesday";
                 break;
-            case(2):
+            case(3):
                 S[0] = "Wednesday";
                 break;
-            case(3):
+            case(4):
                 S[0] = "Thursday";
                 break;
-            case(4):
+            case(5):
                 S[0] = "Friday";
                 break;
-            case(5):
+            case(6):
                 S[0] = "Saturday";
                 break;
-            case(6):
+            case(0):
                 S[0] = "Sunday";
                 break;
 
-
         }
+        S[0]="null";
         return db.rawQuery(sql,S);
     }
 

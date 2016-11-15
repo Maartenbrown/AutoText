@@ -59,7 +59,7 @@ public class AutoReplyDBHelper extends SQLiteOpenHelper {
     public static final String T7C1 ="longitude";
     public static final String T7C2 = "latitude";
     public static final String T7C3 = "radius";
-    public static final String T7C4 = "leaveEnter";
+    public static final String T7C4 = "leaveEnt";
     private static final String CreateT7 ="CREATE TABLE "+T7Name+" ("+T7Key+" INTEGER PRIMARY KEY, "+
             T7C1+" REAL, "+T7C2+" REAL, "+T7C3+" REAL, "+T7C4+" INTEGER);";
     public static final String T8Name = "MessageCondition";//Message Condition
