@@ -1,16 +1,27 @@
 package autotext.app;
 
 
+import android.Manifest;
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 /**
@@ -48,6 +59,32 @@ public class MapFragment extends Fragment {
         mapView = (MapView) v.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(final GoogleMap googleMap) {
+                UiSettings settings = googleMap.getUiSettings();
+                settings.setCompassEnabled(true);
+
+                googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                    Marker marker = null;
+
+                    @Override
+                    public void onMapLongClick(LatLng latLng) {
+                        if(marker != null) {
+                            marker.remove();
+                        }
+
+                        marker = googleMap.addMarker(new MarkerOptions()
+                                .position(latLng)
+                        );
+                    }
+                });
+
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);
+                googleMap.setMyLocationEnabled(true);
+            }
+        });
+
         mapView.onResume();// needed to get the map to display immediately
 
         try {
@@ -56,7 +93,6 @@ public class MapFragment extends Fragment {
             e.printStackTrace();
         }
 
-        //googleMap = mapView.getMap();
         return v;
     }
 
