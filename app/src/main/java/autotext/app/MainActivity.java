@@ -187,8 +187,8 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
                     for (long k = 1; k < 8; k++) {
                     //    Log.d("Check", "k loop 1");
                         if (!send && days.indexOf(k + "") >= 0) {
-                            Log.d("checking","start + offset: "+((k-1)*DAY+st+calOffset));
-                            Log.d("checking","start + offset: "+((k-1)*DAY+end+calOffset));
+                            //Log.d("checking","start + offset: "+((k-1)*DAY+st+calOffset));
+                            //Log.d("checking","start + offset: "+((k-1)*DAY+end+calOffset));
                             if (((k-1) * DAY + st + calOffset < current) && ((k-1) * DAY + end + calOffset > current)) {
                                 send = true;/* Message is to be sent during this time*/
                                 Log.d("Check", "Correct time on message.");
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
                     //call send message with them
                     if (send) {
                         Log.d("Sending", "Sending a message");
-                        sendMessage(cursor.getString(i), number + "");                    }
+                        sendMessage(mtext, number + "");                    }
                 }
                 Log.d("in checker","checked messages");
             }
