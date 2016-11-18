@@ -59,7 +59,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="50dp"
             android:id="@+id/menu_screen_compose_button"
-            android:text="Compose Message"/>
+            android:text="New Message"/>
     </LinearLayout>
 
     <LinearLayout

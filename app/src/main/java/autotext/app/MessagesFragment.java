@@ -23,7 +23,7 @@ import android.widget.ListView;
 public class MessagesFragment extends Fragment {
 
 
-
+    //private final String TAG = getClass().getSimpleName();
     private OnFragmentInteractionListener mListener;
     private String[] tempMessages = {"Message1","message2","set message3",
             "set message 4",
@@ -56,6 +56,7 @@ public class MessagesFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         Log.d(TAG, "Fragment created");
     }
@@ -65,7 +66,7 @@ public class MessagesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
-        ArrayAdapter<String> adapt =new ArrayAdapter<String>(this.getContext(), R.layout.message_list, R.id.m_list_text, tempMessages);
+        ArrayAdapter<String> adapt =new ArrayAdapter<>(this.getContext(), R.layout.message_list, R.id.m_list_text, tempMessages);
         ListView li = (ListView) view.findViewById(R.id.message_list);
         li.setAdapter(adapt);
         return view;
@@ -89,6 +90,7 @@ public class MessagesFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
 
     @Override
     public void onDetach() {

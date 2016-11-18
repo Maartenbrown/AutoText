@@ -22,7 +22,7 @@ import android.widget.CheckBox;
  */
 
 public class Settings extends Fragment implements OnClickListener {
-
+    //private final String TAG = getClass().getSimpleName();
     private Settings.OnFragmentInteractionListener settingsListener;
 
     private Button facebookButton;
@@ -36,7 +36,7 @@ public class Settings extends Fragment implements OnClickListener {
     public static Settings newInstance() { return new Settings(); }
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
+        Log.d(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         Log.d(TAG, "Fragment created");
         //setContentView(R.layout.settings_screen;
