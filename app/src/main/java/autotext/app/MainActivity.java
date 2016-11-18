@@ -13,7 +13,8 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         MenuFragment.OnFragmentInteractionListener, Login.OnFragmentInteractionListener,
         HistoryFragment.OnFragmentInteractionListener, MessagesFragment.OnFragmentInteractionListener,
         ContactsFragment.OnFragmentInteractionListener, ConversationFragment.OnFragmentInteractionListener,
-        ComposeMessage.OnFragmentInteractionListener, Settings.OnFragmentInteractionListener {
+        ComposeMessage.OnFragmentInteractionListener, Settings.OnFragmentInteractionListener,
+        MapFragment.OnFragmentInteractionListener {
 
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private final String TAG = "MAIN";
