@@ -10,19 +10,23 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class AutoReplyDBHelper extends SQLiteOpenHelper {
 
+
+
+    public static int baseWIFI = 9999;
+    public static int baseGPS= 9999;
     public static final String T1Name = "User";//User Table
     public static final String T1C1 = "name";
     public static final String T1C2 = "password";
     public static final String T1Key = "user_ID";
     private static final String CreateT1 ="CREATE TABLE "+T1Name+" ("+T1Key+" INTEGER PRIMARY KEY,"
-            +T1C1+" VARCHAR(20) NOT NULL UNIQUE, "
-            +T1C2 +" VARCHAR(255) NOT NULL);";
+            +T1C1+" TEXT NOT NULL UNIQUE, "
+            +T1C2 +" TEXT NOT NULL);";
     public static final String T2Name = "Contact";//Contact Table
     public static final String T2Key = "cID";
     public static final String T2C1 = "name";
     public static final String T2C2 ="uID_User";
     private static final String CreateT2 = "CREATE TABLE "+T2Name+" ("+T2Key+" INTEGER PRIMARY KEY, "
-            +T2C1+ " VARCHAR(50), "+T2C2+" INTEGER, FOREIGN KEY ("+T2C2+") REFERENCES "+T1Name+"("+T1Key+"));";
+            +T2C1+ " TEXT, "+T2C2+" INTEGER, FOREIGN KEY ("+T2C2+") REFERENCES "+T1Name+"("+T1Key+"));";
     public static final String T3Name="ReceivedMessages";//Received Messages Table
     public static final String T3Key ="rMessageID";
     public static final String T3C1 ="time";
@@ -31,7 +35,7 @@ public class AutoReplyDBHelper extends SQLiteOpenHelper {
     public static final String T3C4 = "cID_Contact";
     private static final String CreateT3 ="CREATE TABLE "+T3Name+" ("+T3Key+" INTEGER PRIMARY KEY, "+
             T3C1+" TEXT, "+
-            T3C2+" VARCHAR, "+T3C3+" INTEGER, "+
+            T3C2+" TEXT, "+T3C3+" INTEGER, "+
             T3C4+" INTEGER, FOREIGN KEY ("+T3C3+") REFERENCES "+T1Name+"("+T1Key+"), FOREIGN KEY ("+T3C4+") REFERENCES "+T2Name+"("+T2Key+"));";
     public static final String T4Name="SentMessages";//Sent Messages Table
     public static final String T4Key ="sMessageID";
@@ -41,7 +45,7 @@ public class AutoReplyDBHelper extends SQLiteOpenHelper {
     public static final String T4C4 = "cID_Contact";
     private static final String CreateT4 ="CREATE TABLE "+T4Name+" ("+T4Key+" INTEGER PRIMARY KEY, "+
             T4C1+" TEXT , "+
-            T4C2+" VARCHAR,"+T4C3+" INTEGER, "+
+            T4C2+" TEXT,"+T4C3+" INTEGER, "+
             T4C4+" INTEGER, FOREIGN KEY ("+T4C3+") REFERENCES "+T1Name+"("+T1Key+"), FOREIGN KEY ("+T4C4+") REFERENCES "+T2Name+"("+T2Key+"));";
     public static final String T5Name ="PhoneContact";//Phone Contact Table
     public static final String T5Key ="phoneNumber";
@@ -53,7 +57,7 @@ public class AutoReplyDBHelper extends SQLiteOpenHelper {
     public static final String T6C1 = "wifiName";
     public static final String T6C2 = "leaveEnter"; //0 for enter, 1 for leave
     private static final String CreateT6="CREATE TABLE "+T6Name+" ("+T6Key+" INTEGER PRIMARY KEY, "+
-            T6C1+" VARCHAR(255), "+T6C2+" INTEGER);";
+            T6C1+" TEXT, "+T6C2+" INTEGER);";
     public static final String T7Name ="GPSCondition";//GPS Condition
     public static final String T7Key ="GPSID";
     public static final String T7C1 ="longitude";
@@ -79,10 +83,11 @@ public class AutoReplyDBHelper extends SQLiteOpenHelper {
     public static final String T9C6 = "onOff"; //integer on = 0, off =1
     public static final String T9C7 = "condID_MessageCondition";
     public static final String T9C8 = "uID_User";
+    public static final String T9C9 = "pNumber";//phone number
     private static final String CreateT9="CREATE TABLE "+T9Name +" ("+T9Key+" INTEGER PRIMARY KEY, "+
-            T9C1+" VARCHAR , "+T9C2+" TEXT, "+T9C3+" TEXT, "+T9C4+" TEXT, "+T9C5+" INTEGER, "+
+            T9C1+" TEXT , "+T9C2+" BIGINT, "+T9C3+" BIGINT, "+T9C4+" TEXT, "+T9C5+" INTEGER, "+
             T9C6+" INTEGER, "+T9C7+" INTEGER, "+
-            T9C8+" INTEGER,  FOREIGN KEY ("+T9C7+") REFERENCES "+T8Name+" ("+T8Key+") FOREIGN KEY ("+T9C8+") REFERENCES "+T1Name+" ("+T1Key+"));";
+            T9C8+" INTEGER, "+T9C9+" BIGINT,  FOREIGN KEY ("+T9C7+") REFERENCES "+T8Name+" ("+T8Key+") FOREIGN KEY ("+T9C8+") REFERENCES "+T1Name+" ("+T1Key+"));";
 
     //DOES NOT CURRENTLY INCLUDE FACEBOOK OR TWITTER CONTACTS, should be new tables given how it's set up
     public static final String T10Name ="PhoneContactList";//Message Contact List Table
@@ -93,7 +98,8 @@ public class AutoReplyDBHelper extends SQLiteOpenHelper {
             "PRIMARY KEY ("+T10C1+", "+T10C2+"));";
 
 
-
+    private static final String baseW = "INSERT INTO "+T6Name+"("+T6Key+", "+T6C1+", "+T6C2+") VALUES ("+baseWIFI+", \"null\", 0);";
+    private static final String baseG = "INSERT INTO "+T7Name+"("+T7Key+", "+T7C1+", "+T7C2+", "+T7C3+", "+T7C4+") VALUES ("+baseGPS+",0,0,0,0);";
 
     public AutoReplyDBHelper(Context context){
 
@@ -111,10 +117,34 @@ public class AutoReplyDBHelper extends SQLiteOpenHelper {
         db.execSQL(CreateT8);
         db.execSQL(CreateT9);
         db.execSQL(CreateT10);
+        db.execSQL(baseW);
+        db.execSQL(baseG);
     }
+    String dropTable10 ="DROP TABLE "+T10Name+";";
+    String dropTable9 ="DROP TABLE "+T9Name+";";
+    String dropTable8 ="DROP TABLE "+T8Name+";";
+    String dropTable7 ="DROP TABLE "+T7Name+";";
+    String dropTable6 ="DROP TABLE "+T6Name+";";
+    String dropTable5 ="DROP TABLE "+T5Name+";";
+    String dropTable4 ="DROP TABLE "+T4Name+";";
+    String dropTable3 ="DROP TABLE "+T3Name+";";
+    String dropTable2 ="DROP TABLE "+T2Name+";";
+    String dropTable1 ="DROP TABLE "+T1Name+";";
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+        db.execSQL(dropTable10);
+        db.execSQL(dropTable9);
+        db.execSQL(dropTable8);
+        db.execSQL(dropTable7);
+        db.execSQL(dropTable6);
+        db.execSQL(dropTable5);
+        db.execSQL(dropTable4);
+        db.execSQL(dropTable3);
+        db.execSQL(dropTable2);
+        db.execSQL(dropTable1);
+        this.onCreate(db);
 
     }
 

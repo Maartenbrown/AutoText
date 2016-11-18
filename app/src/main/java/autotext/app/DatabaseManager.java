@@ -19,14 +19,17 @@ import static autotext.app.AutoReplyDBHelper.*;
 
 public class DatabaseManager {
     public	static	final	String	DATABASE_NAME	=	"UserDB";
-    public	static	final	int	DATABASE_VERSION	=	1;
+    public	static	final	int	DATABASE_VERSION	=	8;
     private Context context;
     private SQLiteDatabase db;
+
 
     public DatabaseManager(Context context){
         this.context= context;
         AutoReplyDBHelper helper = new AutoReplyDBHelper(this.context);
         this.db = helper.getWritableDatabase();
+
+
     }
     public long checkUser(String user, String pass){
         String sql ="SELECT "+T1Key+" FROM "+T1Name+" WHERE "+T1C1+" = ? AND "+T1C2+" = ? ";
@@ -109,24 +112,25 @@ public class DatabaseManager {
         state.bindLong(4, leaveEnter);
         return state.executeInsert();
     }
-    public long addMessageCond(int wifiCond, int gpsCond){
+    public long addMessageCond(long wifiCond, long gpsCond){
         String sql = "INSERT INTO "+T8Name+"("+T8C1+", "+T8C2+") VALUES (?, ?)";
         SQLiteStatement state = db.compileStatement(sql);
         state.bindLong(1,wifiCond);
         state.bindLong(2, gpsCond);
         return state.executeInsert();
     }
-    public long addProgMessage(String text, int hour, int minute, String days, int repeat, int onOff, int condition, int user){
-        String sql = "INSERT INTO " +T9Name+"("+T9C1+", "+T9C2+", "+T9C3+", "+T9C4+", "+T9C5+", "+T9C6+", "+T9C7+", "+T9C8+") VALUES (?,?,?,?,?,?,?,?)";
+    public long addProgMessage(String text, long start, long end, String days, int repeat, int onOff, long condition, long user, long number){
+        String sql = "INSERT INTO " +T9Name+"("+T9C1+", "+T9C2+", "+T9C3+", "+T9C4+", "+T9C5+", "+T9C6+", "+T9C7+", "+T9C8+", "+T9C9+") VALUES (?,?,?,?,?,?,?,?,?)";
         SQLiteStatement state = db.compileStatement(sql);
         state.bindString(1,text);
-        state.bindLong(2,hour);
-        state.bindLong(3,minute);
-        state.bindString(4,days);
+        state.bindLong(2,start);
+        state.bindLong(3,end);
+        state.bindString(4,days);//days format is 1-7 in  string so "13" means Sunday, Tuesday
         state.bindLong(5, repeat);
         state.bindLong(6, onOff);
         state.bindLong(7, condition);
         state.bindLong(8, user);
+        state.bindLong(9, number);
         return state.executeInsert();
 
     }
@@ -137,38 +141,15 @@ public class DatabaseManager {
         state.bindLong(2, phoneContact);
         return state.executeInsert();
     }
-    public Cursor getActiveProgMessages(Time now){
-        String sql = "Select * FROM "+T9Name+
+    public Cursor getActiveProgMessages(){
+        String sql = "Select * FROM ("+T9Name+
                 " JOIN "+T8Name+" ON ("+T9C7+" = "+T8Key+
                 ") JOIN "+T7Name+" ON ("+T8C2+" = "+T7Key+
                 ") JOIN "+T6Name+" ON ("+T8C1+" = "+T6Key+
-                ") WHERE (("+T9C6+" = 0) AND ("+T9C4+" = ?));";
+                ")) WHERE ("+T9C6+" = ?)";//get all from joint table where message is on.
         String[] S = new String[1];
-        switch(now.weekDay){
-            case(1):
-                S[0] = "Monday";
-                break;
-            case(2):
-                S[0] = "Tuesday";
-                break;
-            case(3):
-                S[0] = "Wednesday";
-                break;
-            case(4):
-                S[0] = "Thursday";
-                break;
-            case(5):
-                S[0] = "Friday";
-                break;
-            case(6):
-                S[0] = "Saturday";
-                break;
-            case(0):
-                S[0] = "Sunday";
-                break;
-
-        }
-        S[0]="null";
+        S[0]="0";
+       // System.out.println(sql);
         return db.rawQuery(sql,S);
     }
 

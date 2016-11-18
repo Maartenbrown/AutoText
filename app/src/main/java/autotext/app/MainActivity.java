@@ -1,5 +1,7 @@
 package autotext.app;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +15,8 @@ import android.view.View;
 import android.widget.Button;
 import static java.util.concurrent.TimeUnit.*;
 import static autotext.app.AutoReplyDBHelper.*;
+
+import java.util.Calendar;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -30,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     protected DatabaseManager data;
     protected long uID;
     private final ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
+    private static long DAY = 24*60*60*1000L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,91 +137,117 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
 
 
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+        PendingIntent sentP;
+        sentP = PendingIntent.getBroadcast(this, 0, new Intent("sent"),0);
+        smsManager.sendTextMessage("1"+phoneNumber, null, message, sentP, null);
     }
     public void checkMessageRepeat(){
         final Runnable check = new Runnable(){
             public void run(){
                 //check messages goes here
                 //get saved messages
-                Time n = new Time();
-                n.setToNow();
-
-                Cursor cursor = data.getActiveProgMessages(n); //gets only on and day active messages
-                    String[] names = cursor.getColumnNames();//gets names of columns
-
-                    System.out.println(cursor.getCount());
-                    while (cursor.moveToNext()) {
-                        boolean send = true;
-                        //check their conditions
-                        //determine which column is time(s)
-                        int i=0;
-                        for(int j=0;j< names.length;j++){
-                            if(names.equals(T9C2)){
-                                i=j;
-                            }
-                        }
-                        //check Time
-                        int h =cursor.getInt(i);
-                        int m = cursor.getInt(i+1);
-                        int min = n.minute-5;//check 5 minutes from current time
-                        int hr = (n.hour);
-                        if(min<0){
-                            min +=60;//adjust hour and minute for winding back time
-                            hr -=1;
-                            if(hr<0){
-                                hr+=24;
-                            }
-                        }
-                        if(h<=hr||h>n.hour||m<=min||m>n.minute){//if outside time, then don't send
-                            send = false;
-                            Log.d("checking","not right tme, not sending");
-                        }
-                        //check wifi settings
-                        i=0;
-                        for(int j=0;j< names.length;j++){
-                            if(names.equals(T6C1)){
-                                i=j;
-                            }
-                        }
-                        String wiName = cursor.getString(i);
-                        if(!(wiName.equals("None")||wiName.equals("null"))){//check if real value
-                            //actually check if correct wifi is connected
-                            send = false;
-                            Log.d("checking","wifi not connecting not sending");
-                        }
-
-                        //check gps settings
-                        i=0;
-                        for(int j=0;j< names.length;j++){
-                            if(names.equals(T7C1)){//get long
-                                i=j;
-                            }
-                        }
-                        if(!(cursor.getDouble(i+2)==0)){//if radius is not 0
-                            //check against current location
-                            send = false;
-                            Log.d("checking","radius not 0, not sending");
-                        }
-
-
-                        //determine which column is messageText
-                        i=0;
-                        for(int j=0;j< names.length;j++){
-                            if(names.equals(T9C1)){
-                                i=j;
-                            }
-                        }
-                        //call send message with them
-                        if(send){
-                            Log.d("Sendng","Sending a message");
-                            sendMessage(cursor.getString(i), "614668596");//placeholder phone number
+                Log.d("Check","started checking");
+                Calendar cal = Calendar.getInstance();
+                long current = cal.getTimeInMillis();
+                Log.d("checking","current time: "+current);
+                cal.set(Calendar.DAY_OF_WEEK, 1);
+                cal.set(Calendar.HOUR, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                long calOffset = cal.getTimeInMillis();//get start of current week time.
+               // Log.d("Check","before prog messages sql");
+                Cursor cursor = data.getActiveProgMessages(); //gets only on messages
+                String[] names = cursor.getColumnNames();//gets names of columns
+                System.out.println(cursor.getCount());
+               // Log.d("check","after println");
+                while (cursor.moveToNext()) {//move to next row
+                   // Log.d("Check", "first loop");
+                    boolean send = false;//assume not sendable unless it is in the correct time, determined soon.
+                    //check Time and date
+                    //get days
+                    int i = 0;
+                    for (int j = 0; j < names.length; j++) {
+                     //   Log.d("Check", "j loop 1");
+                        if (names[j].equals(T9C4)) {//4 is days
+                            i = j;
                         }
                     }
-                    Log.d("in checker","checked messages");
-                }
+                    //get days string
+                    String days = cursor.getString(i); //days are the column right before repeat
+                    long st = cursor.getLong(i - 2);//start and end time re the 2 before days
+                    long end = cursor.getLong(i - 1);
+                    //check every day
+                    for (long k = 1; k < 8; k++) {
+                    //    Log.d("Check", "k loop 1");
+                        if (!send && days.indexOf(k + "") >= 0) {
+                            Log.d("checking","start + offset: "+((k-1)*DAY+st+calOffset));
+                            Log.d("checking","start + offset: "+((k-1)*DAY+end+calOffset));
+                            if (((k-1) * DAY + st + calOffset < current) && ((k-1) * DAY + end + calOffset > current)) {
+                                send = true;/* Message is to be sent during this time*/
+                                Log.d("Check", "Correct time on message.");
+                            }
+                        }
+                    }
 
-            };
+                    //check wifi settings
+                    i = 0;
+                    for (int j = 0; j < names.length; j++) {
+                       // Log.d("Check", "j loop 2");
+                        if (names[j].equals(T6C1)) {
+                            i = j;
+                        }
+                    }
+                   // Log.d("Check", "outside j loop 2 i="+i);
+                    //TODO check real wifi connections
+                    String wiName = cursor.getString(i);
+                  //  Log.d("Check", "after cursor.getString wiName = "+wiName);
+                    if (!(wiName.equals("null"))) {//check if real value
+                        //actually check if correct wifi is connected
+                        send = false;
+                        Log.d("checking", "wifi not connecting not sending");
+                    }
+                   // Log.d("check","after wifi name check");
+                    //check gps settings
+                    i = 0;
+                    for (int j = 0; j < names.length; j++) {
+                       // Log.d("Check", "j loop 3");
+                        if (names[j].equals(T7C3)) {//get radius
+                            i = j;
+                        }
+                    }
+                    //TODO check against real gps location
+                    if (!(cursor.getDouble(i) == 0)) {//if radius is not 0
+                        //check against current location
+                        send = false;
+                        Log.d("checking", "radius not 0, not sending");
+                    }
+                    //determine which column is messageText
+                    i = 0;
+                    for (int j = 0; j < names.length; j++) {
+                       // Log.d("Check", "j loop 4");
+                        if (names[j].equals(T9C1)) {
+                            i = j;
+                        }
+                    }
+                    String mtext = cursor.getString(i);
+                    //determine which column is phonenumber
+                    i = 0;
+                    for (int j = 0; j < names.length; j++) {
+                       // Log.d("Check", "j loop 5");
+                        if (names[j].equals(T9C9)) {
+                            i = j;
+                        }
+                    }
+                    long number = cursor.getLong(i);
+                    //call send message with them
+                    if (send) {
+                        Log.d("Sending", "Sending a message");
+                        sendMessage(cursor.getString(i), number + "");                    }
+                }
+                Log.d("in checker","checked messages");
+            }
+
+        };
         final ScheduledFuture<?> checkHandler = schedule.scheduleWithFixedDelay(check, 30,300, SECONDS);
     }
 
@@ -226,10 +257,10 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     public long addWiFiCondition(String name, int leaveEnter){
         return data.addWiFiCondition(name, leaveEnter);
     }
-    public long addProgMessage(String text, int hour, int minute, String days, int repeat, int onOff, int condition, int user){
-        return data.addProgMessage(text, hour, minute, days, repeat, onOff, condition, user);
+    public long addProgMessage(String text, long start, long end, String days, int repeat, int onOff, long condition, long user, long pnum){
+        return data.addProgMessage(text, start, end, days, repeat, onOff, condition, user, pnum);
     }
-    public long addMessageCond(int wifiCond, int gpsCond){
+    public long addMessageCond(long wifiCond, long gpsCond){
         return data.addMessageCond(wifiCond, gpsCond);
     }
     public long getUserID(){

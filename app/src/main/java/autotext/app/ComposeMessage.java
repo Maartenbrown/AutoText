@@ -45,7 +45,7 @@ public class ComposeMessage extends Fragment {
     public EditText editMessage;
     private String message;
     public EditText editPhoneNumber;
-    private String phoneNumber;
+    private Long phoneNumber;
     public EditText editWifiName;
 
 
@@ -65,13 +65,15 @@ public class ComposeMessage extends Fragment {
     private CheckBox gpsEnterCheck;
     private CheckBox wifiConnectCheck;
     private CheckBox wifiDisconnectCheck;
-    private int leaveEnter;
+    private int leaveEnterW=0;//wifi
+    private int leaveEnterG=0;//gps
 
     public long wifiCond;
     public long gpsCond;
     public long messageCond;
     public int onOff;
     private TimePicker timePicker;
+    private long number= 61466859960L;
 
     private boolean isScheduledMessage;
     private boolean isGpsMessage;
@@ -154,7 +156,7 @@ public class ComposeMessage extends Fragment {
         Log.d(TAG, "Fragment detached");
         composeListener = null;
     }
-
+    /*
     private void onScheduleMessage () {
         gpsLeaveCheck.setEnabled(false);
         gpsEnterCheck.setEnabled(false);
@@ -224,141 +226,104 @@ public class ComposeMessage extends Fragment {
         isGpsMessage = false;
         isWifiMessage = false;
     }
-
+    */
     private void saveMessage() {
-        Calendar calendar = Calendar.getInstance();
+        //initialize calendar to current week, at minimum time. ie sunday at midnight
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, 1);
+        cal.set(Calendar.HOUR, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND,0);
+        long timebase = cal.getTimeInMillis();
+        message= editMessage.getText().toString();
+        phoneNumber = Long.parseLong(editPhoneNumber.getText().toString());
+        onOff = 0;
+        if(message.isEmpty()) {
+            editMessage.setError("Message text is required!");
+            return;
+        }
+        if(phoneNumber<=0) {
+            editPhoneNumber.setError("Phone number is required!");
+            return;
+        } else if (phoneNumber<=999999999) {
+            editPhoneNumber.setError("Phone number must be 10 digits!");
+            return;
+        }
 
-        if (saveMessageButton.isPressed()) {
-            message= editMessage.getText().toString();
-            phoneNumber = editPhoneNumber.getText().toString();
-            onOff = 0;
+        //set base wifi/gps conditions
+        wifiCond = AutoReplyDBHelper.baseWIFI;
+        gpsCond = AutoReplyDBHelper.baseGPS;
+        //Get time of day
+        cal.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+        cal.set(Calendar.MINUTE, timePicker.getCurrentMinute());
+        long start = cal.getTimeInMillis()-timebase;//get time during week
+        long end = start +(60*1000*5L);//start +5 minutes in miliseconds
 
-            if(message.isEmpty()) {
-                editMessage.setError("Message text is required!");
-                return;
+        //Check for repeating
+        if (repeatCheck.isChecked()) {
+            repeat = 0;
+            Log.d(TAG, "Message will repeat weekly");
+        } else {
+            repeat = 1;
+        }
+        //create days string
+        String days ="";
+        if (mondayCheck.isChecked()) {
+            days+="2";
+        }
+        if (tuesdayCheck.isChecked()) {
+            days+="3";
+        }
+        if (wednesdayCheck.isChecked()) {
+            days+="4";
+        }
+        if (thursdayCheck.isChecked()) {
+            days+="5";
+        }
+        if (fridayCheck.isChecked()) {
+            days+="6";
+        }
+        if (saturdayCheck.isChecked()) {
+            days+="7";
+        }
+        if (sundayCheck.isChecked()) {
+            days+="0";
+        }
+        //set up wifi information
+        String wifiName = editWifiName.getText().toString();
+        if(wifiName != null && wifiName.length()>0){
+
+            if (wifiConnectCheck.isChecked()) {
+                leaveEnterW = 0;
+                wifiCond = composeListener.addWiFiCondition(wifiName, leaveEnterW);
             }
-            if(phoneNumber.isEmpty()) {
-                editPhoneNumber.setError("Phone number is required!");
-                return;
-            } else if (phoneNumber.length() != 10) {
-                editPhoneNumber.setError("Phone number must be 10 digits!");
-                return;
-            }
-
-            if (mondayCheck.isChecked() || tuesdayCheck.isChecked() || wednesdayCheck.isChecked() ||
-                    thursdayCheck.isChecked() || fridayCheck.isChecked() || repeatCheck.isChecked()
-                    || saturdayCheck.isChecked() || sundayCheck.isChecked()) {
-                onScheduleMessage();
-            }
-
-            if (gpsEnterCheck.isChecked() || gpsLeaveCheck.isChecked()) {
-                onGpsMessage();
-            }
-
-            if (wifiConnectCheck.isChecked() || wifiDisconnectCheck.isChecked()) {
-                onWifiMessage();
-            }
-
-            if(isScheduledMessage) {
-                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
-                calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
-                String wifiName = "null";
-                wifiCond = composeListener.addWiFiCondition(wifiName, 1);
-                gpsCond = composeListener.addGPSCondition(0, 0, 0, 0);
-                messageCond = composeListener.addMessageCond((int) wifiCond, (int) gpsCond);
-                leaveEnter = 0;
-
-                if (repeatCheck.isChecked()) {
-                    repeat = 1;
-                    Log.d(TAG, "Message will repeat weekly");
-                } else {
-                    repeat = 0;
-                }
-
-                if (mondayCheck.isChecked()) {
-                    calendar.set(Calendar.DAY_OF_WEEK, MONDAY);
-                    composeListener.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Monday" , repeat, onOff, (int) messageCond, (int) composeListener.getUserID());
-                    Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Monday!");
-                }
-                if (tuesdayCheck.isChecked()) {
-                    calendar.set(Calendar.DAY_OF_WEEK, TUESDAY);
-                    Long a =composeListener.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Tuesday" , repeat, onOff, (int) messageCond, (int) composeListener.getUserID());
-                    Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Tuesday!, message number"+a);
-                }
-                if (wednesdayCheck.isChecked()) {
-                    calendar.set(Calendar.DAY_OF_WEEK, WEDNESDAY);
-                    composeListener.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Wednesday" , repeat, onOff, (int) messageCond, (int) composeListener.getUserID());
-                    Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Wednesday!");
-                }
-                if (thursdayCheck.isChecked()) {
-                    calendar.set(Calendar.DAY_OF_WEEK, THURSDAY);
-                    composeListener.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Thursday" , repeat, onOff, (int) messageCond, (int) composeListener.getUserID());
-                    Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Thursday!");
-                }
-                if (fridayCheck.isChecked()) {
-                    calendar.set(Calendar.DAY_OF_WEEK, FRIDAY);
-                    composeListener.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Friday" , repeat, onOff, (int) messageCond, (int) composeListener.getUserID());
-                    Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Friday!");
-                }
-                if (saturdayCheck.isChecked()) {
-                    calendar.set(Calendar.DAY_OF_WEEK, SATURDAY);
-                    composeListener.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Saturday" , repeat, onOff, (int) messageCond,(int) composeListener.getUserID());
-                    Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Saturday!");
-                }
-                if (sundayCheck.isChecked()) {
-                    calendar.set(Calendar.DAY_OF_WEEK, SUNDAY);
-                    composeListener.addProgMessage(message, HOUR_OF_DAY, MINUTE, "Sunday" , repeat, onOff, (int) messageCond, (int) composeListener.getUserID());
-                    Log.d(TAG, "Message set for " + HOUR_OF_DAY + ":" + MINUTE + " on Sunday!");
-                }
-
-
-            } else if (isWifiMessage) {
-                String wifiName = editWifiName.getText().toString();
-                gpsCond = composeListener.addGPSCondition(0, 0, 0, 0);
-                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
-                calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
-                repeat = 0;
-                if (wifiConnectCheck.isChecked()) {
-                    leaveEnter = 0;
-                    composeListener.addWiFiCondition(wifiName, leaveEnter);
-                    messageCond = composeListener.addMessageCond((int) wifiCond, (int) gpsCond);
-                    composeListener.addProgMessage(message, HOUR_OF_DAY, MINUTE, "null" , repeat, onOff, (int) messageCond,(int) composeListener.getUserID() );
-                    Log.d(TAG, "Message set to send when connecting to WiFi network: " + wifiName);
-                } else if (wifiDisconnectCheck.isChecked()) {
-                    leaveEnter = 1;
-                    composeListener.addWiFiCondition(wifiName, leaveEnter);
-                    messageCond = composeListener.addMessageCond((int) wifiCond, (int) gpsCond);
-                    composeListener.addProgMessage(message, HOUR_OF_DAY, MINUTE, "null" , repeat, onOff, (int) messageCond,(int) composeListener.getUserID());
-                    Log.d(TAG, "Message set to send when disconnecting from WiFi network: " + wifiName);
-                } else {
-                    Log.d(TAG, "ERROR in WiFi settings");
-                }
-
-            } else if (isGpsMessage) {
-                //TODO: Add GPS coordinates from Google Maps
-                long latitude = 40;
-                long longitude = 83;
-                long radius = 50;
-                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
-                calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
-                String wifiName = "null";
-                wifiCond = composeListener.addWiFiCondition(wifiName, 0);
-                if (gpsEnterCheck.isChecked()) {
-                    leaveEnter = 1;
-                    composeListener.addGPSCondition(longitude, latitude, radius, leaveEnter);
-                    Log.d(TAG, "Message set to send when entering GPS location");
-                } else if (gpsLeaveCheck.isChecked()) {
-                    leaveEnter = 1;
-                    composeListener.addGPSCondition(longitude, latitude, radius, leaveEnter);
-                    Log.d(TAG, "Message set to send when leaving GPS location");
-                } else {
-                    Log.d(TAG, "ERROR in GPS settings");
-                }
-            } else {
-                Log.d(TAG, "No message option selected");
-
+             else if (wifiDisconnectCheck.isChecked()) {
+                 leaveEnterW = 1;
+                wifiCond = composeListener.addWiFiCondition(wifiName, leaveEnterW);
             }
         }
+        //set up gps information
+        //TODO: Add GPS coordinates from Google Maps
+        long latitude = 0;
+        long longitude = 0;
+        long radius = 0;
+
+        if (gpsEnterCheck.isChecked()&& radius>0) {
+            leaveEnterG = 0;
+            gpsCond = composeListener.addGPSCondition(latitude, longitude, radius, leaveEnterG);
+        } else if (gpsLeaveCheck.isChecked()) {
+            leaveEnterG= 1;
+            gpsCond = composeListener.addGPSCondition(latitude, longitude, radius, leaveEnterG);
+        }
+        //make message
+        //first set up message condition, gps and wifi conditions already exist
+        messageCond = composeListener.addMessageCond(wifiCond,gpsCond);
+        //then create message
+        composeListener.addProgMessage(message,start, end, days, repeat, onOff, messageCond, composeListener.getUserID(), number);
+        Log.d("Message","Created new message");
+
+
     }
 
 
@@ -377,8 +342,8 @@ public class ComposeMessage extends Fragment {
         void onFragmentInteraction(Uri uri);
         long addGPSCondition(double longi, double lat, double radius, int leaveEnter);
         long addWiFiCondition(String name, int leaveEnter);
-        long addProgMessage(String text, int hour, int minute, String days, int repeat, int onOff, int condition, int user);
-        long addMessageCond(int wifiCond, int gpsCond);
+        long addProgMessage(String text, long start, long end, String days, int repeat, int onOff, long condition, long user, long pnum);
+        long addMessageCond(long wifiCond, long gpsCond);
         long getUserID();
 //        String getPhoneNumber();
 //        String getMessage();
