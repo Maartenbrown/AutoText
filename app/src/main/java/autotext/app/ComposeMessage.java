@@ -38,8 +38,6 @@ import static java.util.Calendar.WEDNESDAY;
  * create an instance of this fragment.
  */
 public class ComposeMessage extends Fragment {
-
-    private OnFragmentInteractionListener mListener;
     private Button selectLocationButton;
     private OnFragmentInteractionListener composeListener;
 
@@ -103,17 +101,11 @@ public class ComposeMessage extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_compose_message, container, false);
 
-        selectLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.goToMap();
-            }
-        });
-
         editMessage = (EditText) view.findViewById(R.id.compose_message_text);
         editPhoneNumber = (EditText) view.findViewById(R.id.compose_message_phone);
         editWifiName = (EditText) view.findViewById(R.id.compose_wifi_name);
         saveMessageButton = (Button) view.findViewById(R.id.compose_message_save);
+        selectLocationButton = (Button) view.findViewById(R.id.compose_message_select_location);
 
         mondayCheck = (CheckBox) view.findViewById(R.id.compose_message_monday);
         tuesdayCheck = (CheckBox) view.findViewById(R.id.compose_message_tuesday);
@@ -135,6 +127,13 @@ public class ComposeMessage extends Fragment {
             @Override
             public void onClick (View v) {
                 saveMessage();
+            }
+        });
+
+        selectLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                composeListener.goToMap();
             }
         });
 

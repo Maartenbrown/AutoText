@@ -169,6 +169,5 @@ public class MenuFragment extends Fragment {
         void goToSettings();
         void goToComposeMessage();
         void logOut();
-        void goToComposeMessage();
     }
 }
