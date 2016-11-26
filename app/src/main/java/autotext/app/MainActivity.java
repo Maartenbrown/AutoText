@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.text.format.Time;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     protected long uID;
     private final ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
     private static long DAY = 24*60*60*1000L;
+    private ScheduledFuture<?> checkHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         setContentView(R.layout.activity_main);
         data = new DatabaseManager(this.getApplicationContext());
         goToLogin();
-
+        View bar =  findViewById(R.id.my_toolbar);
+        bar.setVisibility(View.GONE);
     }
 
     public void goToAutoReply() {
@@ -53,6 +56,10 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     }
 
     public void goToLogin() {
+        View bar =  findViewById(R.id.my_toolbar);//hide toolbar
+        bar.setVisibility(View.GONE);
+        uID = -1; //set user id to -1;
+
         Login loginFragment = Login.newInstance();
         fragmentManager.beginTransaction().replace(R.id.main_fragment, loginFragment).commit();
     }
@@ -90,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     }
 
     public void logOut(){
+        checkHandler.cancel(true);
         goToLogin();
         //disable menu bar buttons here.
     }
@@ -103,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     }
     public void onLogin(long userID){
         uID = userID;
-        Button go = (Button) findViewById(R.id.auto_reply_button);
+        Button go = (Button) findViewById(R.id.auto_reply_button);//attach all the toolbar buttons
         go.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,10 +139,11 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         contacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToMessages();
-            }
+                goToContacts();            }
 
         });
+        View bar =  findViewById(R.id.my_toolbar);//show the toolbar
+        bar.setVisibility(View.VISIBLE);
 
         goToMenu();
         checkMessageRepeat();
@@ -255,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
             }
 
         };
-        final ScheduledFuture<?> checkHandler = schedule.scheduleWithFixedDelay(check, 30,300, SECONDS);
+        checkHandler = schedule.scheduleWithFixedDelay(check, 30,300, SECONDS);
     }
 
     public long addGPSCondition(double longi, double lat, double radius, int leaveEnter){
