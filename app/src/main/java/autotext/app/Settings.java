@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.NumberPicker;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +28,9 @@ public class Settings extends Fragment implements OnClickListener {
 
     private Button facebookButton;
     private Button twitterButton;
+    private Button saveButton;
+    private NumberPicker np;
+
     private final String TAG = "SETTINGS";
 
     public Settings() {
@@ -78,6 +82,20 @@ public class Settings extends Fragment implements OnClickListener {
         twitterButton = (Button) view.findViewById(R.id.settings_screen_twitter_button);
         facebookButton.setOnClickListener(this);
         twitterButton.setOnClickListener(this);
+        np = (NumberPicker) view.findViewById(R.id.numberPicker1);
+        np.setMinValue(1);
+        np.setMaxValue(99);
+
+        saveButton = (Button) view.findViewById(R.id.settingSave);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = np.getValue();
+                settingsListener.setFreq(i);
+            }
+
+        });
+
 
         return view;
     }
@@ -106,6 +124,8 @@ public class Settings extends Fragment implements OnClickListener {
     public void onClick(View view) {
 
 
+
+
         //TODO: Navigation to another view
     }
 
@@ -122,5 +142,7 @@ public class Settings extends Fragment implements OnClickListener {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+        void setFreq(int f);
     }
+
 }

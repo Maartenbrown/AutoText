@@ -2,6 +2,7 @@ package autotext.app;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +23,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import android.preference.PreferenceManager;
 
 
 public class MainActivity extends AppCompatActivity implements AutoReply.OnFragmentInteractionListener,
@@ -38,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     private final ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
     private static long DAY = 24*60*60*1000L;
     private ScheduledFuture<?> checkHandler;
+    private SharedPreferences checkFreq;
+    private final String prefNameF= "frequency";
+    private int checkFrequency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,13 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         goToLogin();
         View bar =  findViewById(R.id.my_toolbar);
         bar.setVisibility(View.GONE);
+        checkFreq = PreferenceManager.getDefaultSharedPreferences(this);
+        if(!(checkFreq.contains(prefNameF))){
+            SharedPreferences.Editor edi = checkFreq.edit();
+            edi.putInt(prefNameF, 5);
+            edi.commit();
+        }
+        checkFrequency = checkFreq.getInt(prefNameF, -1);
     }
 
     public void goToAutoReply() {
@@ -99,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     public void logOut(){
         checkHandler.cancel(true);
         goToLogin();
-        //disable menu bar buttons here.
+
     }
     public long checkLogin(String user, String pass){
         return data.checkUser(user, pass);
@@ -198,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
                         if (!send && days.indexOf(k + "") >= 0) {
                             //Log.d("checking","start + offset: "+((k-1)*DAY+st+calOffset));
                             //Log.d("checking","start + offset: "+((k-1)*DAY+end+calOffset));
-                            if (((k-1) * DAY + st + calOffset < current) && ((k-1) * DAY + end + calOffset > current)) {
+                            if (((k-1) * DAY + st + calOffset < current) && ((k-1) * DAY + end + calOffset+(60*1000*checkFrequency) > current)) {
                                 send = true;/* Message is to be sent during this time*/
                                 Log.d("Check", "Correct time on message.");
                             }
@@ -264,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
             }
 
         };
-        checkHandler = schedule.scheduleWithFixedDelay(check, 30,300, SECONDS);
+        checkHandler = schedule.scheduleWithFixedDelay(check, (60*checkFrequency),(60*checkFrequency), SECONDS);
     }
 
     public long addGPSCondition(double longi, double lat, double radius, int leaveEnter){
@@ -281,6 +293,14 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     }
     public long getUserID(){
         return uID;
+    }
+
+    public void setFreq(int f){
+        SharedPreferences.Editor edi = checkFreq.edit();
+        edi.putInt(prefNameF, f);
+        edi.commit();
+        checkHandler.cancel(true);
+        checkMessageRepeat();
     }
 
     @Override
