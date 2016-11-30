@@ -284,12 +284,20 @@ public class ComposeMessage extends Fragment {
         cal.set(Calendar.MILLISECOND,0);
         long timebase = cal.getTimeInMillis();
         message= editMessage.getText().toString();
-        phoneNumber = Long.parseLong(editPhoneNumber.getText().toString());
+        String phoneNumberText = editPhoneNumber.getText().toString();
         onOff = 0;
         if(message.isEmpty()) {
             editMessage.setError("Message text is required!");
             return;
         }
+
+        if(phoneNumberText.isEmpty()) {
+            editPhoneNumber.setError("Phone number is required!");
+            return;
+        }
+
+        phoneNumber = Long.parseLong(phoneNumberText);
+
         if(phoneNumber<=0) {
             editPhoneNumber.setError("Phone number is required!");
             return;
