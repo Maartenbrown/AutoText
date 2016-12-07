@@ -39,10 +39,14 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     protected long uID;
     private final ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
     private static long DAY = 24*60*60*1000L;
+
+    private Bundle tempMessageState;
+
     private ScheduledFuture<?> checkHandler;
     private SharedPreferences checkFreq;
     private final String prefNameF= "frequency";
     private int checkFrequency;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
 
     public void goToComposeMessage() {
         ComposeMessage composeMessage = ComposeMessage.newInstance();
+        composeMessage.setArguments(tempMessageState);
         fragmentManager.beginTransaction().replace(R.id.main_fragment, composeMessage).addToBackStack("composeMessage").commit();
     }
 
@@ -159,6 +164,14 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
 
         goToMenu();
         checkMessageRepeat();
+    }
+
+    public void saveEditMessage(Bundle savedFragmentState) {
+        tempMessageState = savedFragmentState;
+    }
+
+    public void deleteTempEditMessage() {
+        tempMessageState = null;
     }
 
     public void sendMessage(String message, String phoneNumber) {

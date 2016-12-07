@@ -98,6 +98,7 @@ public class ComposeMessage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_compose_message, container, false);
 
@@ -133,9 +134,46 @@ public class ComposeMessage extends Fragment {
         selectLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle savedFragmentState = new Bundle();
+
+                savedFragmentState.putString("message", editMessage.getText().toString());
+                savedFragmentState.putString("phoneNumber", editPhoneNumber.getText().toString());
+
+                savedFragmentState.putInt("hour", timePicker.getCurrentHour());
+                savedFragmentState.putInt("min", timePicker.getCurrentMinute());
+
+                savedFragmentState.putBoolean("mondayCheck", mondayCheck.isChecked());
+                savedFragmentState.putBoolean("tuesdayCheck", tuesdayCheck.isChecked());
+                savedFragmentState.putBoolean("wednesdayCheck", wednesdayCheck.isChecked());
+                savedFragmentState.putBoolean("thursdayCheck", thursdayCheck.isChecked());
+                savedFragmentState.putBoolean("fridayCheck", fridayCheck.isChecked());
+                savedFragmentState.putBoolean("saturdayCheck", saturdayCheck.isChecked());
+                savedFragmentState.putBoolean("sundayCheck", sundayCheck.isChecked());
+                savedFragmentState.putBoolean("repeatCheck", repeatCheck.isChecked());
+
+                composeListener.saveEditMessage(savedFragmentState);
                 composeListener.goToMap();
             }
         });
+
+
+        Bundle args = getArguments();
+        if(args != null) {
+            editMessage.setText(args.getString("message"));
+            editPhoneNumber.setText(args.getString("phoneNumber"));
+
+            timePicker.setCurrentHour(args.getInt("hour"));
+            timePicker.setCurrentMinute(args.getInt("min"));
+
+            mondayCheck.setChecked(args.getBoolean("mondayCheck"));
+            tuesdayCheck.setChecked(args.getBoolean("tuesdayCheck"));
+            wednesdayCheck.setChecked(args.getBoolean("wednesdayCheck"));
+            thursdayCheck.setChecked(args.getBoolean("thursdayCheck"));
+            fridayCheck.setChecked(args.getBoolean("fridayCheck"));
+            saturdayCheck.setChecked(args.getBoolean("saturdayCheck"));
+            sundayCheck.setChecked(args.getBoolean("sundayCheck"));
+            repeatCheck.setChecked(args.getBoolean("repeatCheck"));
+        }
 
         return view;
     }
@@ -246,12 +284,20 @@ public class ComposeMessage extends Fragment {
         cal.set(Calendar.MILLISECOND,0);
         long timebase = cal.getTimeInMillis();
         message= editMessage.getText().toString();
-        phoneNumber = Long.parseLong(editPhoneNumber.getText().toString());
+        String phoneNumberText = editPhoneNumber.getText().toString();
         onOff = 0;
         if(message.isEmpty()) {
             editMessage.setError("Message text is required!");
             return;
         }
+
+        if(phoneNumberText.isEmpty()) {
+            editPhoneNumber.setError("Phone number is required!");
+            return;
+        }
+
+        phoneNumber = Long.parseLong(phoneNumberText);
+
         if(phoneNumber<=0) {
             editPhoneNumber.setError("Phone number is required!");
             return;
@@ -332,7 +378,8 @@ public class ComposeMessage extends Fragment {
         composeListener.addProgMessage(message,start, end, days, repeat, onOff, messageCond, composeListener.getUserID(), number);
         Log.d("Message","Created new message");
 
-
+        composeListener.deleteTempEditMessage();
+        composeListener.goToMenu();
     }
 
 
@@ -355,6 +402,9 @@ public class ComposeMessage extends Fragment {
         long addMessageCond(long wifiCond, long gpsCond);
         long getUserID();
         void goToMap();
+        void goToMenu();
+        void saveEditMessage(Bundle savedFragmentState);
+        void deleteTempEditMessage();
 //        String getPhoneNumber();
 //        String getMessage();
     }
