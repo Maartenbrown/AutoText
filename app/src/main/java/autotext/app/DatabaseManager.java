@@ -141,6 +141,11 @@ public class DatabaseManager {
         state.bindLong(2, phoneContact);
         return state.executeInsert();
     }
+    public int turnOffMessage(int messID){
+        String sql ="UPDATE "+T9Name+" SET "+T9C6+" = 1 WHERE "+T9Key+" = "+messID;
+        SQLiteStatement state = db.compileStatement(sql);
+        return state.executeUpdateDelete();
+    }
     public Cursor getActiveProgMessages(){
         String sql = "Select * FROM ("+T9Name+
                 " JOIN "+T8Name+" ON ("+T9C7+" = "+T8Key+

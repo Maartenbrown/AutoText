@@ -267,10 +267,19 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
                         }
                     }
                     long number = cursor.getLong(i);
+                    // get message id
+                    for(int j=0; j<names.length;j++){
+                        if(names[j].equals(T9Key)){
+                            i=j;
+                        }
+                    }
+                    int messageID = cursor.getInt(i);
                     //call send message with them
                     if (send) {
                         Log.d("Sending", "Sending a message");
-                        sendMessage(mtext, number + "");                    }
+                        sendMessage(mtext, number + "");
+                        data.turnOffMessage(messageID);
+                    }
                 }
                 Log.d("in checker","checked messages");
             }
