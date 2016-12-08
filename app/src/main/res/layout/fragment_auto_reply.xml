@@ -3,7 +3,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="autotext.app.AutoReply"
+              android:background="#CFD8DC"
+
+              tools:context="autotext.app.AutoReply"
     android:weightSum="1">
 
     <TextView
@@ -82,6 +84,8 @@
         android:layout_marginTop="@dimen/auto_reply_section_top_margin"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
+        android:background="#1565C0"
+
         android:id="@+id/auto_reply_save_button"
         android:text="Save"/>
 

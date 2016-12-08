@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         PendingIntent sentP;
         sentP = PendingIntent.getBroadcast(this, 0, new Intent("sent"),0);
         smsManager.sendTextMessage("1"+phoneNumber, null, message, sentP, null);
+        checkHandler.cancel(true);
     }
     public void checkMessageRepeat(){
         final Runnable check = new Runnable(){

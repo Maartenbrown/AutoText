@@ -6,12 +6,14 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               tools:context="autotext.app.Login"
+              android:background="#CFD8DC"
               android:weightSum="1">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/login_screen_username"
+        android:textColor="#263238"
         android:textSize="18sp"
         android:layout_marginTop="@dimen/login_username_top_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
@@ -25,13 +27,14 @@
         android:background= "#FFFFFF"
         android:id = "@+id/login_username"
         android:inputType="textEmailAddress"
-        android:gravity="top"/>
+        android:gravity="left"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/login_password_top_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:textColor="#263238"
         android:textSize="18sp"
         android:text="@string/login_screen_password"/>
 
@@ -44,7 +47,7 @@
         android:background= "#FFFFFF"
         android:id = "@+id/login_password"
         android:inputType="textPassword"
-        android:gravity="top"/>
+        android:gravity="left"/>
 
 
     <Button
@@ -53,6 +56,8 @@
         android:layout_marginTop="@dimen/auto_reply_section_top_margin"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
+        android:background="#1565c0"
+        android:textColor="#ECEFF1"
         android:onClick="openMenu"
         android:id="@+id/login_screen_login_button"
         android:text="Login"/>
@@ -63,7 +68,9 @@
         android:layout_marginTop="@dimen/auto_reply_section_top_margin"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
+        android:background="#607D8B"
         android:id="@+id/login_screen_new_user_button"
+        android:textColor="#ECEFF1"
         android:text="New User"/>
 </LinearLayout>
 

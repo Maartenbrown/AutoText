@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id = "@+id/menu_screen_layout_id"
+              android:background = "#CFD8DC"
     tools:context="autotext.app.MenuFragment"
     android:weightSum="1">
 
@@ -14,15 +15,19 @@
         android:layout_height="150dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:layout_gravity="center_horizontal"
         android:orientation="horizontal" >
         <Button
             android:layout_width="150dp"
             android:layout_height="75dp"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
+            android:layout_marginRight="16dp"
             android:onClick="openContacts"
+            android:background="#90CAF9"
             android:id="@+id/menu_screen_contacts_button"
+            android:textColor="#263238"
             android:text="Contacts"/>
 
         <Button
@@ -31,7 +36,9 @@
             android:gravity="center"
             android:layout_gravity="center_horizontal"
             android:onClick="openMessages"
+            android:background="#90CAF9"
             android:id="@+id/menu_screen_message_history_button"
+            android:textColor="#263238"
             android:text="Message History"/>
     </LinearLayout>
 
@@ -48,8 +55,11 @@
             android:layout_height="75dp"
             android:gravity="center"
             android:layout_gravity="center_horizontal"
+            android:layout_marginRight="16dp"
             android:layout_marginBottom="50dp"
+            android:background="#90CAF9"
             android:id="@+id/menu_screen_messages_button"
+            android:textColor="#263238"
             android:text="Messages"/>
 
         <Button
@@ -58,7 +68,9 @@
             android:gravity="center"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="50dp"
+            android:background="#90CAF9"
             android:id="@+id/menu_screen_compose_button"
+            android:textColor="#263238"
             android:text="New Message"/>
     </LinearLayout>
 
@@ -75,8 +87,11 @@
             android:layout_height="75dp"
             android:gravity="center"
             android:layout_gravity="left"
+            android:layout_marginRight="16dp"
+            android:background="#90CAF9"
             android:onClick="openSettings"
             android:id="@+id/menu_screen_settings_button"
+            android:textColor="#263238"
             android:text="Settings"/>
 
         <Button
@@ -84,8 +99,10 @@
             android:layout_height="75dp"
             android:gravity="center"
             android:layout_gravity="right"
+            android:background="#90CAF9"
             android:onClick="openAutoreply"
             android:id="@+id/menu_screen_auto_reply_button"
+            android:textColor="#263238"
             android:text="Auto-Reply"/>
     </LinearLayout>
 
@@ -96,6 +113,8 @@
         android:layout_gravity="center"
         android:onClick="openLogout"
         android:id="@+id/menu_screen_logout_button"
+        android:background = "#607D8B"
         android:layout_alignParentEnd = "true"
+        android:textColor="#ECEFF1"
         android:text="Log Out"/>
 </LinearLayout>

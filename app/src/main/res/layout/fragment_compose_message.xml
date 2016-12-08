@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+              android:background="#CFD8DC"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
@@ -17,6 +18,7 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom = "0dp"
             android:textSize = "16sp"
+            android:textColor="#263238"
             android:id="@+id/compose_message_phone"
             android:hint="Enter phone number here"
             android:inputType="phone"
@@ -37,6 +39,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#263238"
             android:text="Time: "/>
 
         <TimePicker
@@ -60,42 +63,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/compose_message_sunday"
+            android:textColor="#263238"
             android:text="SU"
             android:textSize="8dp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/compose_message_monday"
+            android:textColor="#263238"
             android:text="MO"
             android:textSize="8dp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/compose_message_tuesday"
+            android:textColor="#263238"
             android:text="TU"
             android:textSize="8dp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/compose_message_wednesday"
+            android:textColor="#263238"
             android:text="WE"
             android:textSize="8dp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/compose_message_thursday"
+            android:textColor="#263238"
             android:text="TH"
             android:textSize="8dp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/compose_message_friday"
+            android:textColor="#263238"
             android:text="FR"
             android:textSize="8dp"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/compose_message_saturday"
+            android:textColor="#263238"
             android:text="SA"
             android:textSize="8dp"/>
     </LinearLayout>
@@ -107,6 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/compose_message_repeat"
+            android:textColor="#263238"
             android:text="Repeat Weekly"
             />
     </LinearLayout>
@@ -114,6 +125,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="#263238"
         android:text="Conditions:"
         android:textSize="20dp"
         android:layout_marginTop="@dimen/auto_reply_section_top_margin"/>
@@ -126,15 +138,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#263238"
             android:text="GPS:"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#263238"
             android:text="Enter"
             android:id="@+id/compose_message_enter_gps"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#263238"
             android:text="Leave"
             android:id="@+id/compose_message_leave_gps"/>
 
@@ -142,8 +157,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="40dp"
-            android:gravity="end"
-            android:layout_gravity="end"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="#90CAF9"
+            android:textColor="#263238"
             android:text="Select Location"
             android:id="@+id/compose_message_select_location"
             android:textSize="8sp" />
@@ -156,15 +173,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#263238"
             android:text="Wifi:"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#263238"
             android:text="Connect"
             android:id="@+id/compose_message_wifi_connect"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#263238"
             android:text="Disconnect"
             android:id="@+id/compose_message_wifi_disconnect"/>
     </LinearLayout>
@@ -181,5 +201,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:id="@+id/compose_message_save"
+        android:textColor = "#ECEFF1"
+        android:background="#1565C0"
         android:text="Save Message"/>
 </LinearLayout>

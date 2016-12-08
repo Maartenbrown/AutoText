@@ -6,6 +6,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:id = "@+id/settings_screen_id"
+              android:background="#CFD8DC"
               tools:context="autotext.app.Settings"
               android:weightSum="1">
 
@@ -14,30 +15,12 @@
     android:layout_height="wrap_content"
     android:text="Settings"
     android:textSize="25sp"
+    android:textColor="#263238"
     android:gravity="center"
     android:layout_marginTop="@dimen/settings_title_top_margin"
     android:layout_marginLeft="@dimen/activity_horizontal_margin"
     android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/settings_facebook_top_margin"
-        android:gravity="center"
-        android:background="#3B5998"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/settings_screen_facebook_button"
-        android:text="Sign in with Facebook"/>
-
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/settings_twitter_top_margin"
-        android:gravity="center"
-        android:background="#00aced"
-        android:layout_gravity="center_horizontal"
-        android:id="@+id/settings_screen_twitter_button"
-        android:text="Sign in with Twitter"/>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:tools="http://schemas.android.com/tools"
@@ -45,6 +28,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_marginTop = "30dp"
+                  android:layout_marginLeft="0dp"
                   android:layout_gravity="center_horizontal"
                   tools:context="autotext.app.Settings"
                   android:weightSum="2">
@@ -61,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textColor="#263238"
             android:textSize="18sp"
             android:text="Use GPS"/>
 
@@ -87,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textColor="#263238"
             android:textSize="18sp"
             android:text="Use WiFi"/>
 
@@ -113,6 +99,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textColor="#263238"
             android:textSize="18sp"
             android:text="Use Cell Towers"/>
 
@@ -126,7 +113,7 @@
         <NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/numberPicker1"
+            android:id="@+id/frequencyPicker"
             android:layout_gravity="left"
             android:layout_marginLeft="50dp"
             android:orientation="vertical"
@@ -136,6 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:textColor="#263238"
             android:layout_marginTop="40dp"
             android:textSize="15sp"
             android:text="Check Interval (mins)"/>
@@ -144,6 +132,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/settingSave"
             android:text="save"
+            android:background="#1565C0"
+            android:textColor="#ECEFF1"
             />
 
 

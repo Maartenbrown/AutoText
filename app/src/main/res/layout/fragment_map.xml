@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+             android:background="#CFD8DC"
     tools:context="autotext.app.MapFragment">
 
     <LinearLayout
@@ -24,6 +25,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/map_fragment_select"
+                android:background="#263238"
+                android:textColor="#ECEFF1"
                 android:text="Select"/>
         </LinearLayout>
 

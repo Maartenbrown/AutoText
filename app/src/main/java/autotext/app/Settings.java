@@ -77,12 +77,7 @@ public class Settings extends Fragment implements OnClickListener {
         if (cellCheckBox.isChecked()) {
             cellCheckBox.setChecked(false);
         }
-
-        facebookButton = (Button) view.findViewById(R.id.settings_screen_facebook_button);
-        twitterButton = (Button) view.findViewById(R.id.settings_screen_twitter_button);
-        facebookButton.setOnClickListener(this);
-        twitterButton.setOnClickListener(this);
-        np = (NumberPicker) view.findViewById(R.id.numberPicker1);
+        np = (NumberPicker) view.findViewById(R.id.frequencyPicker);
         np.setMinValue(1);
         np.setMaxValue(99);
 
