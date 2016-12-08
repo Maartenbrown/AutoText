@@ -8,11 +8,8 @@ import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
-import android.text.format.Time;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import static java.util.concurrent.TimeUnit.*;
@@ -22,7 +19,7 @@ import java.util.Calendar;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+
 import android.preference.PreferenceManager;
 
 
@@ -46,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
     private SharedPreferences checkFreq;
     private final String prefNameF= "frequency";
     private int checkFrequency;
+    private ScheduledFuture<?> repeatHandler;
+    private int repeatCheckfreq = 24*60;
 
 
     @Override
@@ -64,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
             edi.commit();
         }
         checkFrequency = checkFreq.getInt(prefNameF, -1);
+
     }
 
     public void goToAutoReply() {
@@ -163,7 +163,8 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         bar.setVisibility(View.VISIBLE);
 
         goToMenu();
-        checkMessageRepeat();
+        checkMessageSend();
+        checkRepeat();
     }
 
     public void saveEditMessage(Bundle savedFragmentState) {
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         smsManager.sendTextMessage("1"+phoneNumber, null, message, sentP, null);
         checkHandler.cancel(true);
     }
-    public void checkMessageRepeat(){
+    public void checkMessageSend(){
         final Runnable check = new Runnable(){
             public void run(){
                 //check messages goes here
@@ -302,6 +303,15 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         checkHandler = schedule.scheduleWithFixedDelay(check, (60*checkFrequency),(60*checkFrequency), SECONDS);
     }
 
+    public void checkRepeat(){
+        final Runnable rep = new Runnable() {
+            public void run() {
+                data.checkRepeating();
+            }
+        };
+        repeatHandler = schedule.scheduleWithFixedDelay(rep, 3600, 60*repeatCheckfreq, SECONDS);
+    }
+
     public long addGPSCondition(double longi, double lat, double radius, int leaveEnter){
         return data.addGPSCondition(longi, lat, radius, leaveEnter);
     }
@@ -323,7 +333,7 @@ public class MainActivity extends AppCompatActivity implements AutoReply.OnFragm
         edi.putInt(prefNameF, f);
         edi.commit();
         checkHandler.cancel(true);
-        checkMessageRepeat();
+        checkMessageSend();
     }
 
     @Override

@@ -25,6 +25,7 @@ public class DatabaseManager {
 
 
     public DatabaseManager(Context context){
+
         this.context= context;
         AutoReplyDBHelper helper = new AutoReplyDBHelper(this.context);
         this.db = helper.getWritableDatabase();
@@ -32,6 +33,7 @@ public class DatabaseManager {
 
     }
     public long checkUser(String user, String pass){
+
         String sql ="SELECT "+T1Key+" FROM "+T1Name+" WHERE "+T1C1+" = ? AND "+T1C2+" = ? ";
         SQLiteStatement state = db.compileStatement(sql);
         state.bindString(1, user);
@@ -156,6 +158,11 @@ public class DatabaseManager {
         S[0]="0";
        // System.out.println(sql);
         return db.rawQuery(sql,S);
+    }
+    public long checkRepeating(){
+            String sql = "UPDATE "+T9Name+" SET "+T9C6+" = 0 WHERE "+T9C5+" = 1;";
+        SQLiteStatement state = db.compileStatement(sql);
+        return state.executeUpdateDelete();
     }
 
 }
